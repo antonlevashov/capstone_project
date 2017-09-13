@@ -1,9 +1,25 @@
 # Machine Learning Engineer Nanodegree
 ## Capstone Proposal
-Joe Udacity  
-December 31st, 2050
+Anton Levashov 
+September 13st, 2017
 
 ## Proposal
+- Trading bot based on sentiment analisis of different medias in crypthocurency market. 
+
+- First stage:
+  - Analysis of smal corpus for day trading 
+  - Only twitter and comment section in facebook/forums
+  - Use Word2Vec and other ML algo to compare the metrics and choose the most suitable.
+
+- Second stage:  
+  - Make a execution module in trading bot.
+  - 
+  
+- Third stage:
+  - Add more sources of input (blogs, news portals, etc...)
+
+
+
 _(approx. 2-3 pages)_
 
 ### Domain Background
