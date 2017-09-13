@@ -13,7 +13,7 @@ September 13st, 2017
 
 - Second stage:  
   - Make a execution module in trading bot.
-  - 
+  - Find wich source has more influence in market. 
   
 - Third stage:
   - Add more sources of input (blogs, news portals, etc...)
