@@ -5,6 +5,8 @@ September 13st, 2017
 
 ## Proposal
 - Trading bot based on sentiment analisis of different medias in crypthocurency market. 
+- Learn media influence on the crypto market.
+- Try to find correlation betwen tweets on the journey T and prices change in T+1
 
 - First stage:
   - Analysis of smal corpus for day trading 
