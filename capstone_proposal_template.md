@@ -3,10 +3,17 @@
 Anton Levashov 
 September 13st, 2017
 
+
+http://www.sciencedirect.com/science/article/pii/S2090447914000550
+https://www.cse.iitb.ac.in/~pb/cs626-449-2009/prev-years-other-things-nlp/sentiment-analysis-opinion-mining-pang-lee-omsa-published.pdf
+https://machinelearningmastery.com/predict-sentiment-movie-reviews-using-deep-learning/
+
 ## Proposal
-- Trading bot based on sentiment analysis of different medias in crypthocurency market. 
-- Learn media influence on the crypto market.
+- Trading bot based on sentiment analysis of different medias in crypthocurency market.
+- Or find correlation betwen tweets and trends in markets.
+- Test on different cryptocurrencies.
 - Try to find correlation betwen tweets on the journey T and prices change in T+1
+- Find the hot topics and they trends
 
 - First stage:
   - Analysis of smal corpus for day trading 
@@ -19,8 +26,13 @@ September 13st, 2017
   
 - Third stage:
   - Add more sources of input (blogs, news portals, etc...)
+  
+  
+Max Entropy classifier can benefit from the neutral class
+Just remember that in case that you use the n-grams framework, the number of n should not be too big. Particularly in Sentiment Analysis you will see that using 2-grams or 3-grams is more than enough and that increasing the number of keyword combinations can hurt the results. Moreover keep in mind that in Sentiment Analysis the number of occurrences of the word in the text does not make much of a difference. Usually Binarized versions (occurrences clipped to 1) of the algorithms perform better than the ones that use multiple occurrences.
+In learning based techniques, before training the classifier, you must select the words/features that you will use on your model. You can’t just use all the words that the tokenization algorithm returned simply because there are several irrelevant words within them.
 
-
+Two commonly used feature selection algorithms in Text Classification are the Mutual Information and the Chi-square test. Each algorithm evaluates the keywords in a different way and thus leads to different selections. Also each algorithm requires different configuration such as the level of statistical significance, the number of selected features etc. Again you must use Trial and error to find the configuration that works better in your project.
 
 
 What kind of algorithms do we use for sentiment analysis? 
@@ -93,6 +105,10 @@ Generally it is expected that state of the art classification techniques such as
 _(approximately 1-2 paragraphs)_
 
 In this section, provide the details for a benchmark model or result that relates to the domain, problem statement, and intended solution. Ideally, the benchmark model or result contextualizes existing methods or known information in the domain and problem given, which could then be objectively compared to the solution. Describe how the benchmark model or result is measurable (can be measured by some metric and clearly observed) with thorough detail.
+
+-Classification using the Naïve Bayes Classifier has minimum accuracy. Its accuracy is improved by using the feature selection method.
+-The classification accuracy of Maximum Entropy Classifier is better than the Naïve Bayes Classifier but still less than the Naïve Bayes Classifier with Feature Selection based on Entropy Method whose accuracy is further less than the Maximum Entropy Classifier with Feature Selection based on Entropy Method.
+-So it is found out that maximum Entropy Classifier with Feature Selection based on Entropy Method is best for classification of a given input.
 
 ### Evaluation Metrics
 _(approx. 1-2 paragraphs)_
@@ -203,7 +219,11 @@ NuSVC
 SVC
 DecisionTreeClassifier
 Naive Bayes
+http://blog.datumbox.com/machine-learning-tutorial-the-naive-bayes-text-classifier/
 Maximum Entropy Model
+
+Sentiment analysis algorithms and applications: A survey
+http://www.sciencedirect.com/science/article/pii/S2090447914000550
 
 For Naive Bayes, I had used unigrams (68% accuracy) and bigrams (79% accuracy) as features. I don't exactly remember the PRF value for each classifier on my data set but I got maximum accuracy for Bernoulli Naive Bayes, Maximum Entropy Model (IIS), Linear SVM using five fold validation. I would suggest you not to go for Tree Classifiers as they are not space optimal for training data creating over-complex trees leading to over-fitting and also, learning an optimal decision tree is an NP complete problem. I will thus suggest you to try these :
 
@@ -212,6 +232,21 @@ Support Vector Classifiers - LinearSVC, PolynomialSVC, RbfSVC, NuSVC
 Maximum Entropy Model - GIS, IIS, MEGAM, TADM
 I am currently using a voted model between Naive Bayes and Lexicon based approach.
 -------------------
+https://www.quora.com/What-are-the-best-algorithms-for-sentiment-analysis
+What are the best algorithms for sentiment analysis?
+In a broad sense, you can say that the best algorithms as of now, dpending on the size/type of dataset that you have will be one the the three : RNN derivatives , DeepForests or NBSVM.
+
+If you have a small dataset and its very far from day-to-day English (hence you cannot use pretrained word2vecs etc), NBSVM is a simple and effective algorithm. http://www.aclweb.org/anthology/...
+
+DeepForests Towards An Alternative to Deep Neural Networks claim to be better than even Deep Neural Networks just using tfidf vectors. If combined with Embeddings, these models can work really well.
+
+RNN derivatives (like LSTM or GRUs) are currently the best models which get high accuracies as well as generalize well.
+
+At ParallelDots for earliest sentiment models were Convnets on text (implemented in pure theano in 2014 looking somewhat like Yoon Kim’s paper, the code for which you can now find in keras demos), which we then shifted to LSTMs (which you can see currently on our website) and now we are combining some new LSTM techniques (self attention and Multi Task learning (MTL)) to make them even better if you check them out in a next few weeks of time. Most current NLP benchmarks are slowly being beaten by using one of a combination of these techniques. (attention for sequence prediction, self attention or MTL). For more details you can check out Salesforce Research https://einstein.ai/research .
+
+Google’s [1706.03762] https://arxiv.org/abs/1706.03762 Attention Is All You Need is a very exciting paper, which might replace all RNN derivatives once in for all and looks like a very strong contender for the future.
+
+Interestingly I am working to compile a detailed blog post on this for sometime. I will post the post here when it is completed.
 
 -----------
 
