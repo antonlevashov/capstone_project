@@ -4,7 +4,7 @@ Anton Levashov
 September 13st, 2017
 
 ## Proposal
-- Trading bot based on sentiment analisis of different medias in crypthocurency market. 
+- Trading bot based on sentiment analysis of different medias in crypthocurency market. 
 - Learn media influence on the crypto market.
 - Try to find correlation betwen tweets on the journey T and prices change in T+1
 
@@ -29,6 +29,17 @@ _(approx. 1-2 paragraphs)_
 
 In this section, provide brief details on the background information of the domain from which the project is proposed. Historical information relevant to the project should be included. It should be clear how or why a problem in the domain can or should be solved. Related academic research should be appropriately cited in this section, including why that research is relevant. Additionally, a discussion of your personal motivation for investigating a particular problem in the domain is encouraged but not required.
 
+Crypto currency markets.
+Twitter.
+
+Fundamental analysis
+
+
+
+
+Neural Networks and Bitcoin
+https://medium.com/@binsumi/neural-networks-and-bitcoin-d452bfd7757e
+
 ### Problem Statement
 _(approx. 1 paragraph)_
 
@@ -38,6 +49,8 @@ In this section, clearly describe the problem that is to be solved. The problem 
 _(approx. 2-3 paragraphs)_
 
 In this section, the dataset(s) and/or input(s) being considered for the project should be thoroughly described, such as how they relate to the problem and why they should be used. Information such as how the dataset or input is (was) obtained, and the characteristics of the dataset or input, should be included with relevant references and citations as necessary It should be clear how the dataset(s) or input(s) will be used in the project and whether their use is appropriate given the context of the problem.
+
+When you want to work with Neural Networks the first thing you need is data. Lots of data. That’s why data is also called the new oil. Neural Networks are only effective if you have massive amounts of data. If you are looking for data I can recommend https://www.quandl.com. They have assembled a great collection of databases to get you started.
 
 ### Solution Statement
 _(approx. 1 paragraph)_
