@@ -26,7 +26,6 @@ There is a lot of room for exploration:
 
 
 
-- Use Word2Vec and other ML algo to compare the metrics and choose the most suitable. For a quick and optimized implementation , one can use NLTK. It is a python library for writing machine learning programs, and can be used to implement a support vector machine quickly.
 
 
   
@@ -89,31 +88,46 @@ http://blog.feedspot.com/bitcoin_blogs/
 
 ### Solution Statement
 _(approx. 1 paragraph)_
+I want to try as many classification methods as possible. Because different algorithms deliver different results. 
+Generally it is expected that state of the art classification techniques such as SVM would outperform more simple techniques such as Naïve Bayes, and tools using NN can outperforme all other solutions. But the finall solution must be viable for implimentaion into production enviroment and predict more accurate the direction of market movement on he given day.
+For a small bodies of text Word2Vec is suggested solution. So I'll use Word2Vec and other ML algo to compare the metrics and choose the most suitable. Too optimized the implementation, I'll use NLTK. It is a python library for text processing, and can be used to help in implementation of certain algorithms (ex : support vector machine).
 
-In this section, clearly describe a solution to the problem. The solution should be applicable to the project domain and appropriate for the dataset(s) or input(s) given. Additionally, describe the solution thoroughly such that it is clear that the solution is quantifiable (the solution can be expressed in mathematical or logical terms) , measurable (the solution can be measured by some metric and clearly observed), and replicable (the solution can be reproduced and occurs more than once).
-
-Different Classifiers deliver different results
-Make sure you try as many classification methods as possible. Have in mind that different algorithms deliver different results. Also note that some classifiers might work better with specific feature selection configuration.
-Generally it is expected that state of the art classification techniques such as SVM would outperform more simple techniques such as Naïve Bayes. Nevertheless be prepared to see the opposite. Sometimes Naïve Bayes is able to provide the same or even better results than more advanced methods. Don’t eliminate a classification model only due to its reputation.
 
 ### Benchmark Model
-_(approximately 1-2 paragraphs)_
-
-In this section, provide the details for a benchmark model or result that relates to the domain, problem statement, and intended solution. Ideally, the benchmark model or result contextualizes existing methods or known information in the domain and problem given, which could then be objectively compared to the solution. Describe how the benchmark model or result is measurable (can be measured by some metric and clearly observed) with thorough detail.
-
--Classification using the Naïve Bayes Classifier has minimum accuracy. Its accuracy is improved by using the feature selection method.
--The classification accuracy of Maximum Entropy Classifier is better than the Naïve Bayes Classifier but still less than the Naïve Bayes Classifier with Feature Selection based on Entropy Method whose accuracy is further less than the Maximum Entropy Classifier with Feature Selection based on Entropy Method.
--So it is found out that maximum Entropy Classifier with Feature Selection based on Entropy Method is best for classification of a given input.
+-First I will use classification using the Naïve Bayes Classifier to have a minimum accuracy. Feauther I will try to improved accuracy by using the feature selection method. Also the classification accuracy of Maximum Entropy Classifier is better than the Naïve Bayes Classifier but still less than the Naïve Bayes Classifier with Feature Selection based on Entropy Method whose accuracy is further less than the Maximum Entropy Classifier with Feature Selection based on Entropy Method.
+After some research I found that maximum Entropy Classifier with Feature Selection based on Entropy Method is best for classification of a given input. So my benchmark model will be NB Classifier (compared against a random predicition). 
 
 ### Evaluation Metrics
 _(approx. 1-2 paragraphs)_
 
 In this section, propose at least one evaluation metric that can be used to quantify the performance of both the benchmark model and the solution model. The evaluation metric(s) you propose should be appropriate given the context of the data, the problem statement, and the intended solution. Describe how the evaluation metric(s) are derived and provide an example of their mathematical representations (if applicable). Complex evaluation metrics should be clearly defined and quantifiable (can be expressed in mathematical or logical terms).
 
+
 ### Project Design
 _(approx. 1 page)_
 
 In this final section, summarize a theoretical workflow for approaching a solution given the problem. Provide thorough discussion for what strategies you may consider employing, what analysis of the data might be required before being used, or which algorithms will be considered for your implementation. The workflow and discussion that you provide should align with the qualities of the previous sections. Additionally, you are encouraged to include small visualizations, pseudocode, or diagrams to aid in describing the project design, but it is not required. The discussion should clearly outline your intended workflow of the capstone project.
+
+- Use Word2Vec and other ML algo to compare the metrics and choose the most suitable. For a quick and optimized implementation , one can use NLTK. It is a python library for writing machine learning programs, and can be used to implement a support vector machine quickly.
+
+  
+Max Entropy classifier can benefit from the neutral class
+Just remember that in case that you use the n-grams framework, the number of n should not be too big. Particularly in Sentiment Analysis you will see that using 2-grams or 3-grams is more than enough and that increasing the number of keyword combinations can hurt the results. Moreover keep in mind that in Sentiment Analysis the number of occurrences of the word in the text does not make much of a difference. Usually Binarized versions (occurrences clipped to 1) of the algorithms perform better than the ones that use multiple occurrences.
+In learning based techniques, before training the classifier, you must select the words/features that you will use on your model. You can’t just use all the words that the tokenization algorithm returned simply because there are several irrelevant words within them.
+
+Two commonly used feature selection algorithms in Text Classification are the Mutual Information and the Chi-square test. Each algorithm evaluates the keywords in a different way and thus leads to different selections. Also each algorithm requires different configuration such as the level of statistical significance, the number of selected features etc. Again you must use Trial and error to find the configuration that works better in your project.
+
+
+What kind of algorithms do we use for sentiment analysis? 
+Is there any list for the algorithms and about their structure?
+There are basically 2 broad types of algorithms for sentiment analysis: lexicon based and learning based techniques
+- Particularly in case of twitter, avoid using lexicon based techniques because users are known to use idioms, jargons and twitter slangs what heavily affect the polarity of the tweet.
+https://www.quora.com/What-kind-of-algorithms-do-we-use-for-sentiment-analysis-Is-there-any-list-for-the-algorithms-and-about-their-structure
+
+In word2vec, this is cast as a feed-forward neural network and optimized as such using SGD
+-  for short texts Naive Bayes may perform better than Support Vector Machines
+
+I used unigrams and bigrams without removing stopwords but removing proper nouns as my features. Presence, Count or TfIdf score were used depending on classifier as Presence gave better results with Naive Bayes while Tf Idf gave better results with Linear SVM. I then, did an association measure test based on chi square/poisson stirling ratio/likelihood ratio to find the most informative features and used them to train the model. 
 
 -------------------
 https://github.com/turi-code/tutorials/blob/master/notebooks/deep_text_learning.ipynb
