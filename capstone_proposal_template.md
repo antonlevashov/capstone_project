@@ -8,25 +8,27 @@ http://www.sciencedirect.com/science/article/pii/S2090447914000550
 https://www.cse.iitb.ac.in/~pb/cs626-449-2009/prev-years-other-things-nlp/sentiment-analysis-opinion-mining-pang-lee-omsa-published.pdf
 https://machinelearningmastery.com/predict-sentiment-movie-reviews-using-deep-learning/
 
+
 ## Proposal
-- Trading bot based on sentiment analysis of different medias in crypthocurency market.
-- Or find correlation betwen tweets and trends in markets.
-- Test on different cryptocurrencies.
-- Try to find correlation betwen tweets on the journey T and prices change in T+1
-- Find the hot topics and they trends
 
-- First stage:
-  - Analysis of smal corpus for day trading 
-  - Only twitter and comment section in facebook/forums
-  - Use Word2Vec and other ML algo to compare the metrics and choose the most suitable.
+- The purpose of this project is to create a module for a trading bot, this bot will take different positions in crypthocurency market. The module will performe sentiment analysis on twitter data comming from a list of important news sources and influencial people. 
+In exploration part the module will give us some statistics about tweets, hot topics and trends in market to see what are the things  people are talking the most. The goal is to understand the general "feeling" of the markets and see the changes.
+The second part is about finding correlation betwen tweets on the time T and prices change in T+1 in the given market. I would like to try two aproches:
+1. By predicting the sentiment of the tweet (positive, negative, neutral) try to find the degree of correlation with the movement of the price. 
+2. Feed the tweets as predictors to a neural network and price of coin as a predicted value. And see if NN can capture some hidden connexion. As someone said - "if everyone says you should buy it - sell it".  
 
-- Second stage:  
-  - Make a execution module in trading bot.
-  - Find wich source has more influence in market. 
-  
-- Third stage:
-  - Add more sources of input (blogs, news portals, etc...)
-  
+Such things were tried before in financial markets but wasn't very conclusive because there is many big players who can move markets, in cryptocurencies (a way smaller capitalisation) it's a little bit different - there are many small players and a few big instituions so social medias have more influence than in equity market for example. 
+There is a lot of room for exploration: 
+  - Test the system on different cryptocurrencies.
+  - Test the different combination of coins and tweets.
+  - Find if tweets about one coin have an influence on others (at the moment different crypto coins are extremly positivly correlated).
+
+
+
+
+- Use Word2Vec and other ML algo to compare the metrics and choose the most suitable. For a quick and optimized implementation , one can use NLTK. It is a python library for writing machine learning programs, and can be used to implement a support vector machine quickly.
+
+
   
 Max Entropy classifier can benefit from the neutral class
 Just remember that in case that you use the n-grams framework, the number of n should not be too big. Particularly in Sentiment Analysis you will see that using 2-grams or 3-grams is more than enough and that increasing the number of keyword combinations can hurt the results. Moreover keep in mind that in Sentiment Analysis the number of occurrences of the word in the text does not make much of a difference. Usually Binarized versions (occurrences clipped to 1) of the algorithms perform better than the ones that use multiple occurrences.
@@ -52,13 +54,6 @@ _(approx. 2-3 pages)_
 _(approx. 1-2 paragraphs)_
 
 In this section, provide brief details on the background information of the domain from which the project is proposed. Historical information relevant to the project should be included. It should be clear how or why a problem in the domain can or should be solved. Related academic research should be appropriately cited in this section, including why that research is relevant. Additionally, a discussion of your personal motivation for investigating a particular problem in the domain is encouraged but not required.
-
-Crypto currency markets.
-Twitter.
-
-Fundamental analysis
-
-
 
 
 Neural Networks and Bitcoin
