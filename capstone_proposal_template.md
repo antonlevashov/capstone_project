@@ -14,38 +14,15 @@ https://machinelearningmastery.com/predict-sentiment-movie-reviews-using-deep-le
 - The purpose of this project is to create a module for a trading bot, this bot will take different positions in crypthocurency market. The module will performe sentiment analysis on twitter data comming from a list of important news sources and influencial people. 
 In exploration part the module will give us some statistics about tweets, hot topics and trends in market to see what are the things  people are talking the most. The goal is to understand the general "feeling" of the markets and see the changes.
 The second part is about finding correlation betwen tweets on the time T and prices change in T+1 in the given market. I would like to try two aproches:
-1. By predicting the sentiment of the tweet (positive, negative, neutral) try to find the degree of correlation with the movement of the price. 
-2. Feed the tweets as predictors to a neural network and price of coin as a predicted value. And see if NN can capture some hidden connexion. As someone said - "if everyone says you should buy it - sell it".  
+  1. By predicting the sentiment of the tweet (positive, negative, neutral) try to find the degree of correlation with the movement of the price. 
+  2. Feed the tweets as predictors to a neural network and price of coin as a predicted value. And see if NN can capture some hidden connexion. As someone said - "if everyone says you should buy it - sell it".  
 
-Such things were tried before in financial markets but wasn't very conclusive because there is many big players who can move markets, in cryptocurencies (a way smaller capitalisation) it's a little bit different - there are many small players and a few big instituions so social medias have more influence than in equity market for example. 
+Such things were tried before in financial markets but wasn't very conclusive because there is many big players who can move markets, in cryptocurencies (a way smaller capitalisation) it's a bit different - there are many small players and a few big instituions so social medias have more influence than in equity market for example. 
 There is a lot of room for exploration: 
   - Test the system on different cryptocurrencies.
   - Test the different combination of coins and tweets.
   - Find if tweets about one coin have an influence on others (at the moment different crypto coins are extremly positivly correlated).
 
-
-
-
-
-
-  
-Max Entropy classifier can benefit from the neutral class
-Just remember that in case that you use the n-grams framework, the number of n should not be too big. Particularly in Sentiment Analysis you will see that using 2-grams or 3-grams is more than enough and that increasing the number of keyword combinations can hurt the results. Moreover keep in mind that in Sentiment Analysis the number of occurrences of the word in the text does not make much of a difference. Usually Binarized versions (occurrences clipped to 1) of the algorithms perform better than the ones that use multiple occurrences.
-In learning based techniques, before training the classifier, you must select the words/features that you will use on your model. You can’t just use all the words that the tokenization algorithm returned simply because there are several irrelevant words within them.
-
-Two commonly used feature selection algorithms in Text Classification are the Mutual Information and the Chi-square test. Each algorithm evaluates the keywords in a different way and thus leads to different selections. Also each algorithm requires different configuration such as the level of statistical significance, the number of selected features etc. Again you must use Trial and error to find the configuration that works better in your project.
-
-
-What kind of algorithms do we use for sentiment analysis? 
-Is there any list for the algorithms and about their structure?
-There are basically 2 broad types of algorithms for sentiment analysis: lexicon based and learning based techniques
-- Particularly in case of twitter, avoid using lexicon based techniques because users are known to use idioms, jargons and twitter slangs what heavily affect the polarity of the tweet.
-https://www.quora.com/What-kind-of-algorithms-do-we-use-for-sentiment-analysis-Is-there-any-list-for-the-algorithms-and-about-their-structure
-
-In word2vec, this is cast as a feed-forward neural network and optimized as such using SGD
--  for short texts Naive Bayes may perform better than Support Vector Machines
-
-I used unigrams and bigrams without removing stopwords but removing proper nouns as my features. Presence, Count or TfIdf score were used depending on classifier as Presence gave better results with Naive Bayes while Tf Idf gave better results with Linear SVM. I then, did an association measure test based on chi square/poisson stirling ratio/likelihood ratio to find the most informative features and used them to train the model.  
 
 _(approx. 2-3 pages)_
 
@@ -59,14 +36,22 @@ Neural Networks and Bitcoin
 https://medium.com/@binsumi/neural-networks-and-bitcoin-d452bfd7757e
 
 ### Problem Statement
-_(approx. 1 paragraph)_
-
-In this section, clearly describe the problem that is to be solved. The problem described should be well defined and should have at least one relevant potential solution. Additionally, describe the problem thoroughly such that it is clear that the problem is quantifiable (the problem can be expressed in mathematical or logical terms) , measurable (the problem can be measured by some metric and clearly observed), and replicable (the problem can be reproduced and occurs more than once).
+Our future trading bot (I'm not making a bot but just a part of it) need to make a bet buy, sell or keep and our module will try to help this bot make a guess about direction of the market and act on it. I think by analysing social media (twitter in this example) we can "feel" if market is bullish or bearish. The final output of the algorithm will be a prediction about direction of the market for the next few hours (I think it will be beetwen 1 hour and 1 day). 
 
 ### Datasets and Inputs
 _(approx. 2-3 paragraphs)_
 
 In this section, the dataset(s) and/or input(s) being considered for the project should be thoroughly described, such as how they relate to the problem and why they should be used. Information such as how the dataset or input is (was) obtained, and the characteristics of the dataset or input, should be included with relevant references and citations as necessary It should be clear how the dataset(s) or input(s) will be used in the project and whether their use is appropriate given the context of the problem.
+
+
+I will use Twitter Streaming API to download tweets related to the choosen keywords (ex: "bitcoin", "ethereum", "ripple", etc).
+In order to access Twitter Streaming API, I'll get 4 pieces of information from Twitter: API key, API secret, Access token and Access token secret (using Tweepy https://github.com/tweepy/tweepy or something similiar). I will also pre-processing the tweets by removing URLs, special symbols, convert to lower case and using 4 Python libraries: json for parsing the data, pandas for data manipulation,  for creating charts, and RE for regular expressions. 
+
+SORUCES:
+Sentiment Analysis of Twitter Data Using Machine Learning Approaches and Semantic Analysis 
+http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6897213
+An Introduction to Text Mining using Twitter Streaming API and Python
+http://adilmoujahid.com/posts/2014/07/twitter-analytics/
 
 -------------------
 https://medium.com/@binsumi/neural-networks-and-bitcoin-d452bfd7757e
@@ -258,6 +243,15 @@ Google’s [1706.03762] https://arxiv.org/abs/1706.03762 Attention Is All You Ne
 Interestingly I am working to compile a detailed blog post on this for sometime. I will post the post here when it is completed.
 
 -----------
+SOURCES:
+Sentiment Analysis on Movie Reviews
+https://www.kaggle.com/c/sentiment-analysis-on-movie-reviews/data
+Personality Prediction Based on Twitter Stream
+https://www.kaggle.com/c/twitter-personality-prediction#description
+Tutorial on how to use Google's Word2Vec
+https://www.kaggle.com/c/word2vec-nlp-tutorial
+ANALYZING CRYPTOCURRENCY MARKETS USING PYTHON
+https://blog.patricktriest.com/analyzing-cryptocurrencies-python/
 
 **Before submitting your proposal, ask yourself. . .**
 
