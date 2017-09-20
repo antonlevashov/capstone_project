@@ -10,8 +10,7 @@ https://machinelearningmastery.com/predict-sentiment-movie-reviews-using-deep-le
 
 
 ## Proposal
-
-- The purpose of this project is to create a small module for a future trading bot, this bot will take different positions in crypthocurency market. The module will performe sentiment analysis on twitter data comming from a list of important news sources and influencial people.
+The purpose of this project is to create a small module for a future trading bot, this bot will take different positions in crypthocurency market. The module will performe sentiment analysis on twitter data comming from a list of important news sources and influencial people and give a prediction about direction of the market.
 During the exploration part the module will give us some statistics about tweets, hot topics and trends in market to see what are the things  people are talking the most. The goal is to understand the general "feeling" of the markets and trends to give us some insights.
 The second part is about finding correlation betwen tweets on the time T and prices change in T+1 in the given market. I would like to try two aproches:
   1. By predicting the sentiment of the tweet (positive, negative, neutral) try to find how is it correlatted to the movement of the price. 
@@ -40,13 +39,10 @@ For example those guys could obtain 75.56% accuracy (it's a research paper, in r
 http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.375.4517&rep=rep1&type=pdf
 
 SOURCES:
-
 Twitter can help predict stock market performance
 https://hub.jhu.edu/2015/04/23/twitter-predicts-ipos/
-
 Can Tweets And Facebook Posts Predict Stock Behavior
 http://www.investopedia.com/articles/markets/031814/can-tweets-and-facebook-posts-predict-stock-behavior-and-rt-if-you-think-so.asp
-
 Neural Networks and Bitcoin
 https://medium.com/@binsumi/neural-networks-and-bitcoin-d452bfd7757e
 
@@ -54,43 +50,23 @@ https://medium.com/@binsumi/neural-networks-and-bitcoin-d452bfd7757e
 Our future trading bot (I'm not making a bot but just a part of it) need to make a bet buy, sell or keep and our module will try to help this bot make a guess about direction of the market and act on it. I think by analysing social media (twitter in this example) we can "feel" if market is bullish or bearish. The final output of the algorithm will be a prediction about direction of the market for the next few hours (I think it will be beetwen 1 hour and 1 day). 
 
 ### Datasets and Inputs
-_(approx. 2-3 paragraphs)_
-
-In this section, the dataset(s) and/or input(s) being considered for the project should be thoroughly described, such as how they relate to the problem and why they should be used. Information such as how the dataset or input is (was) obtained, and the characteristics of the dataset or input, should be included with relevant references and citations as necessary It should be clear how the dataset(s) or input(s) will be used in the project and whether their use is appropriate given the context of the problem.
-
-
 I will use Twitter Streaming API to download tweets related to the choosen keywords (ex: "bitcoin", "ethereum", "ripple", etc).
-In order to access Twitter Streaming API, I'll get 4 pieces of information from Twitter: API key, API secret, Access token and Access token secret (using Tweepy https://github.com/tweepy/tweepy or something similiar). I will also pre-processing the tweets by removing URLs, special symbols, convert to lower case and using 4 Python libraries: json for parsing the data, pandas for data manipulation,  for creating charts, and RE for regular expressions. 
+In order to access Twitter Streaming API (https://dev.twitter.com/streaming/overview), I'll get 4 pieces of information from Twitter: API key, API secret, Access token and Access token secret (using Tweepy https://github.com/tweepy/tweepy or something similiar from this list https://dev.twitter.com/resources/twitter-libraries). I will also pre-processing the tweets by removing URLs, special symbols, convert to lower case and using 4 Python libraries: json for parsing the data, pandas for data manipulation,  for creating charts, and RE for regular expressions. 
+I was also thinking about adding other data sources from https://www.quandl.com like price of gold, different exchange rate, etc... but for this project I'll use only twitter data. I hope in AI nanodegre I'll extend this projet more by including top 100 Bitcoin Blogs and Websites on Bitcoin Crypto-Currency and Blockchain Technology (http://blog.feedspot.com/bitcoin_blogs/).
 
 SORUCES:
 Sentiment Analysis of Twitter Data Using Machine Learning Approaches and Semantic Analysis 
 http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6897213
 An Introduction to Text Mining using Twitter Streaming API and Python
 http://adilmoujahid.com/posts/2014/07/twitter-analytics/
-
--------------------
+Neural Networks and Bitcoin
 https://medium.com/@binsumi/neural-networks-and-bitcoin-d452bfd7757e
-When you want to work with Neural Networks the first thing you need is data. Lots of data. That’s why data is also called the new oil. Neural Networks are only effective if you have massive amounts of data. If you are looking for data I can recommend https://www.quandl.com. They have assembled a great collection of databases to get you started.
-
-We started of with a simple LSTM network with 4 input nodes and 100 hidden nodes and started of with the usual input variables such as:
-Difficulty
-Volume
-Price of Gold
-Exchange rate of USD/CNY
-
-Even with those variables alone the Neural Network had already a decent fit. We cycled through more than 500 input variables and finally settled on 20. We will keep these 20 a secret for now.
--------------------
-Top 100 Bitcoin Blogs and Websites on Bitcoin Crypto-Currency and Blockchain Technology
-http://blog.feedspot.com/bitcoin_blogs/
--------------------
 
 
 
 ### Solution Statement
 _(approx. 1 paragraph)_
-I want to try as many classification methods as possible. Because different algorithms deliver different results. 
-Generally it is expected that state of the art classification techniques such as SVM would outperform more simple techniques such as Naïve Bayes, and tools using NN can outperforme all other solutions. But the finall solution must be viable for implimentaion into production enviroment and predict more accurate the direction of market movement on he given day.
-For a small bodies of text Word2Vec is suggested solution. So I'll use Word2Vec and other ML algo to compare the metrics and choose the most suitable. Too optimized the implementation, I'll use NLTK. It is a python library for text processing, and can be used to help in implementation of certain algorithms (ex : support vector machine).
+To find the sentiment of the tweet and its correaltion to the market I want to try as many classification methods as possible. Because different algorithms can deliver different results. Generally it is expected that state of the art classification techniques such as SVM would outperform more simple techniques such as Naïve Bayes, and tools using NN can outperforme all other solutions. But the finall solution must be viable for implimentaion into production enviroment and predict more accurate the direction of market movement on he given day. For a small bodies of text Word2Vec is suggested solution. So I'll use Word2Vec and other ML algo to compare the metrics and choose the most suitable. Too optimized the implementation, I'll use NLTK. It is a python library for text processing, and can be used to help in implementation of certain algorithms (ex : support vector machine).
 
 
 ### Benchmark Model
@@ -98,8 +74,6 @@ For a small bodies of text Word2Vec is suggested solution. So I'll use Word2Vec 
 After some research I found that maximum Entropy Classifier with Feature Selection based on Entropy Method is best for classification of a given input. So my benchmark model will be NB Classifier (compared against a random predicition). 
 
 ### Evaluation Metrics
-_(approx. 1-2 paragraphs)_
-
 In this section, propose at least one evaluation metric that can be used to quantify the performance of both the benchmark model and the solution model. The evaluation metric(s) you propose should be appropriate given the context of the data, the problem statement, and the intended solution. Describe how the evaluation metric(s) are derived and provide an example of their mathematical representations (if applicable). Complex evaluation metrics should be clearly defined and quantifiable (can be expressed in mathematical or logical terms).
 
 
@@ -108,8 +82,17 @@ _(approx. 1 page)_
 
 In this final section, summarize a theoretical workflow for approaching a solution given the problem. Provide thorough discussion for what strategies you may consider employing, what analysis of the data might be required before being used, or which algorithms will be considered for your implementation. The workflow and discussion that you provide should align with the qualities of the previous sections. Additionally, you are encouraged to include small visualizations, pseudocode, or diagrams to aid in describing the project design, but it is not required. The discussion should clearly outline your intended workflow of the capstone project.
 
-- Use Word2Vec and other ML algo to compare the metrics and choose the most suitable. For a quick and optimized implementation , one can use NLTK. It is a python library for writing machine learning programs, and can be used to implement a support vector machine quickly.
+EXTRACTION OF TWEETS
 
+PARSING
+
+EXPLORATION AND STATS
+
+SIMPLE CLASSIFIERS FOR SENTIMENT
+
+NN FOR SENTIMENT
+
+NN 
   
 Max Entropy classifier can benefit from the neutral class
 Just remember that in case that you use the n-grams framework, the number of n should not be too big. Particularly in Sentiment Analysis you will see that using 2-grams or 3-grams is more than enough and that increasing the number of keyword combinations can hurt the results. Moreover keep in mind that in Sentiment Analysis the number of occurrences of the word in the text does not make much of a difference. Usually Binarized versions (occurrences clipped to 1) of the algorithms perform better than the ones that use multiple occurrences.
