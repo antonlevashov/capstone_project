@@ -11,11 +11,11 @@ https://machinelearningmastery.com/predict-sentiment-movie-reviews-using-deep-le
 
 ## Proposal
 
-- The purpose of this project is to create a module for a trading bot, this bot will take different positions in crypthocurency market. The module will performe sentiment analysis on twitter data comming from a list of important news sources and influencial people. 
-In exploration part the module will give us some statistics about tweets, hot topics and trends in market to see what are the things  people are talking the most. The goal is to understand the general "feeling" of the markets and see the changes.
+- The purpose of this project is to create a small module for a future trading bot, this bot will take different positions in crypthocurency market. The module will performe sentiment analysis on twitter data comming from a list of important news sources and influencial people.
+During the exploration part the module will give us some statistics about tweets, hot topics and trends in market to see what are the things  people are talking the most. The goal is to understand the general "feeling" of the markets and trends to give us some insights.
 The second part is about finding correlation betwen tweets on the time T and prices change in T+1 in the given market. I would like to try two aproches:
-  1. By predicting the sentiment of the tweet (positive, negative, neutral) try to find the degree of correlation with the movement of the price. 
-  2. Feed the tweets as predictors to a neural network and price of coin as a predicted value. And see if NN can capture some hidden connexion. As someone said - "if everyone says you should buy it - sell it".  
+  1. By predicting the sentiment of the tweet (positive, negative, neutral) try to find how is it correlatted to the movement of the price. 
+  2. Feed the tweets as predictors to a neural network and price of coin as a predicted value. And see if NN can capture some hidden and interesting patterns. Ex: if someone says every time you should buy it but the price drop naybe NN can capture it and make the "inverse" prediction. In a few month I'll take Artificial Intelligence NANODEGREE, so I hope I'll use more sophisticated/appropriate NN in next itiration of this project.
 
 Such things were tried before in financial markets but wasn't very conclusive because there is many big players who can move markets, in cryptocurencies (a way smaller capitalisation) it's a bit different - there are many small players and a few big instituions so social medias have more influence than in equity market for example. 
 There is a lot of room for exploration: 
@@ -24,13 +24,28 @@ There is a lot of room for exploration:
   - Find if tweets about one coin have an influence on others (at the moment different crypto coins are extremly positivly correlated).
 
 
-_(approx. 2-3 pages)_
-
 ### Domain Background
-_(approx. 1-2 paragraphs)_
+I have a lot of intereste in fiancial markets, especially in the new cryptocurency market. I think it's an interresting play ground as he markets are growing and they are more "social" because one of foundation of blockchain - no autorities.
+I found many papers on line that explains well the impact of social media on financial markets and I would like to see how it performe in cryptocurency market. Here is some good introdcution:
 
-In this section, provide brief details on the background information of the domain from which the project is proposed. Historical information relevant to the project should be included. It should be clear how or why a problem in the domain can or should be solved. Related academic research should be appropriately cited in this section, including why that research is relevant. Additionally, a discussion of your personal motivation for investigating a particular problem in the domain is encouraged but not required.
+Behavioral economics tells us that emotions can profoundly affect individual behavior and decision-making. Does this also apply to societies at large, i.e. can societies experience mood states that affect their collective decision making? By extension is the public mood correlated or even predictive of economic indicators? Here we investigate whether measurements of collective mood states derived from large-scale Twitter feeds are correlated to the value of the Dow Jones Industrial Average (DJIA) over time.
+http://www.sciencedirect.com/science/article/pii/S187775031100007X
 
+
+Behavioral finance researchers have shown that the stock market can be driven by emotions of market participants. In a number of recent studies mood levels have been extracted from Social Media applications in order to predict stock returns. The paper tries to replicate these findings by measuring the mood states on Twitter. The sample consists of roughly 100 million tweets that were published in Germany between January, 2011 and November, 2013. In a first analysis, a significant relationship between aggregate Twitter mood states and the stock market is not found. However, further analyses also consider mood contagion by integrating the number of Twitter followers into the analysis. The results show that it is necessary to take into account the spread of mood states among Internet users. Based on the results in the training period, a trading strategy for the German stock market is created. The portfolio increases by up to 36 % within a six-month period after the consideration of transaction costs.
+https://rd.springer.com/article/10.1007/s12599-015-0390-4
+
+For example those guys could obtain 75.56% accuracy (it's a research paper, in real life it can be less glorious):
+"In order to test our results, we propose a new cross validation method for financial data and obtain 75.56% accuracy using Self Organizing Fuzzy Neural Networks (SOFNN) on the Twitter feeds and DJIA values from the period June 2009 to December 2009."
+http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.375.4517&rep=rep1&type=pdf
+
+SOURCES:
+
+Twitter can help predict stock market performance
+https://hub.jhu.edu/2015/04/23/twitter-predicts-ipos/
+
+Can Tweets And Facebook Posts Predict Stock Behavior
+http://www.investopedia.com/articles/markets/031814/can-tweets-and-facebook-posts-predict-stock-behavior-and-rt-if-you-think-so.asp
 
 Neural Networks and Bitcoin
 https://medium.com/@binsumi/neural-networks-and-bitcoin-d452bfd7757e
