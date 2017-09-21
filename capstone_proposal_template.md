@@ -91,18 +91,10 @@ My evaluation metric will be ...
 ### Project Design
 
 EXTRACTION OF TWEETS AND NEWS
+For the blog posts I'll use Scrapy, a handy Python package for text scraping. If it will take to much time to create a good scraper I'll just use tweets for thi project. For tweets I'll use dedicataed API and libraries (ex https://dev.twitter.com/resources/twitter-libraries).
 
-
-
-PREPROCESSING and Word Embeddings -----------------------------------------
-
-
-I'll use In learning based techniques, before training the classifier, we need to select the words/features that we will use in your model. We  can’t just use all the words that the tokenization algorithm returned (ex: NLTK) because there are several irrelevant words within them. so we need to clean the data from irrelevant information like links, certain stop words, icons, etc...
-
-Also I need to investigate hastags, should I use them or not.
-
-EXPLORATION AND STATS -----------------------------------------
-
+PREPROCESSING ------------------------------------------
+Before giving text to our mood extraction tools, we need to select the words/features that we will use in our model. We  can’t just use all the words that the tokenization algorithm returned (ex: NLTK) because there are several irrelevant words within them, so we need to clean the data from irrelevant information like links, certain stop words, icons, etc... I don't know yet if I need tokenise the text or  just remove some words, tags, links etc... and feed it to mood extractor. Also I need to investigate hastags, should I use them or not.
 
 MOOD EXTRACTION ------------------------------------------
 For Mood extraction I'll try this existing tools (certain tools are written in Java, I'll see if I can handle it):
@@ -114,42 +106,23 @@ For Mood extraction I'll try this existing tools (certain tools are written in J
   ...
   
 
+VARIABLE TO USE
+- sentiment of the data source
+- volume of transaction
+- 
+- 
+
+VARIABLE TO PREDICT
+- price
 
 SIMPLE CLASSIFIERS FOR SENTIMENT -----------------------------------------
 
-Max Entropy classifier can benefit from the neutral class
-Just remember that in case that you use the n-grams framework, the number of n should not be too big. Particularly in Sentiment Analysis you will see that using 2-grams or 3-grams is more than enough and that increasing the number of keyword combinations can hurt the results. Moreover keep in mind that in Sentiment Analysis the number of occurrences of the word in the text does not make much of a difference. Usually Binarized versions (occurrences clipped to 1) of the algorithms perform better than the ones that use multiple occurrences.
 
-For example you might find that Max Entropy with Chi-square as feature selection (https://cmm.cit.nih.gov/maxent/l... ) is the best combination for restaurant reviews, while for twitter the Binarized Naïve Bayes with Mutual Information feature (Machine Learning Tutorial: The Naive Bayes Text Classifier ) selection outperforms even the SVMs. Be prepared to see lots of weird results. Particularly in case of twitter, avoid using lexicon based techniques because users are known to use idioms, jargons and twitter slangs what heavily affect the polarity of the tweet.
-
+SOURCES
+Algoritms to use for sentiment analysis
 https://www.quora.com/What-kind-of-algorithms-do-we-use-for-sentiment-analysis-Is-there-any-list-for-the-algorithms-and-about-their-structure
-
-
-
-There is two very interesting Deep Learning inspired tools for text analysis. The first is the Word2Vec (https://en.wikipedia.org/wiki/Word2vec) algorithm and the second tool is GloVe (https://nlp.stanford.edu/projects/glove/). Both of these representation learning algorithms seemed really useful for analyzing text. I'll use Word2Vec because word2vec is a "predictive" model and GloVe is a "count-based" model.(https://www.quora.com/How-is-GloVe-different-from-word2vec)
-
-It takes a large text corpus as input and outputs a numeric vector representation for each word. The vectors are supposed to represent the semantic similarity between the words. I chose to use Word2Vec due to its outstanding Python implementation written by Radim Řehůřek, and because of an excellent tutorial that was written by Angela Chapman during her internship at Kaggle.
-
-Classify and Regress with GraphLab Create
-Now that I settled on a large dataset and a deep learning inspired tool, the next step was to glue all the parts together. I wanted to create an end-to-end machine learning solution that takes a blogger’s posts as input and predicts the blogger’s gender and age with high accuracy. To make all the parts work together, I used GraphLab Create in the following manner.
-
--First, I processed the blog posts using Beautiful Soup, a handy Python package for text scraping. I then loaded the text into an SFrame, a scalable dataframe object in GraphLab Create.
-- Noise Removal
-Cleaning the data from irrelevant news as well as advertisements/bio(if you have collected data by web crawling)
--Then, I trained a Word2Vec model on the blog posts. It worked! The trained model “knew” that vector representation of “hehe” is similar to the vector representation of “LOL.” (I found this to be mind-blowing.)
--Next, for each blogger, I used Word2Vec to calculate the average vector representation of all words that appeared in the bloggers posts.
--Lastly, I used GraphLab Create’s classification toolkit to construct classifiers that takes the average vector of each blogger as input features and predicts the blogger’s gender and age with high accuracy.
-
-The exciting part, I believe, is that the results obtained in this way are better than the known state-of-the-art algorithm for this problem. But I still need to perform additional tests to verify this conclusion.
-
-If you want to try Deep Learning on text, take a look at my IPython notebook that describes in detail how to create a text classifier using Word2Vec and GraphLab Create. You can use it to create your own blogger gender and age classifier, or construct your own deep text classifiers for other NLP tasks.
-
--------------------
-
--------------------
 Deep Learning for NLP Best Practices
 http://ruder.io/deep-learning-nlp-best-practices/index.html
--------------------
 Implementing a CNN for Text Classification in TensorFlow
 http://www.wildml.com/2015/12/implementing-a-cnn-for-text-classification-in-tensorflow/
 -------------------
