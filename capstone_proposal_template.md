@@ -16,13 +16,14 @@ My module will performe sentiment analysis on twitter and other news data commin
 During the exploration part the module will give us some statistics about tweets, hot topics and trends in market to see what are the things  people are talking the most. The goal is to understand the general "feeling" of the markets and trends to give us some insights.
 The second part is about finding correlation betwen tweets (and they sources) at the time T and prices change in T+1 in the given market.
 
-I'll investigate whether measurements of collective mood states derived from Twitter and other sourcess are correlated to the value of given cryptocurency over time. To analyze content (mood) of Twitter feeds I'll try different tools: 
+I'll investigate whether measurements of collective mood states derived from Twitter and other sourcess are correlated to the value of given cryptocurency over time. To analyze content (mood) of Twitter feeds I'll try this tools (because I don't have twitts labeled as pos/neg): 
   - OpinionFinder that measures positive /negative mood (http://mpqa.cs.pitt.edu/opinionfinder/)
   - Google-Profile of Mood States (Calm, Alert, Sure, Vital, Kind, and Happy)
   - CoreNLP (https://nlp.stanford.edu/sentiment/)
   - Natural Language Classifier by IBM Watson (https://github.com/watson-developer-cloud/python-sdk/tree/master/examples)
   - and others...
   
+
 After performing sentiment analysis I'll feed the mood of the tweets/news and source as predictors to a neural network and price of coin as a predicted value. And see if NN can capture some hidden and interesting patterns. Ex: if someone says every time you should buy it but the price drop naybe NN can capture it and make the "inverse" prediction. In a few month I'll take Artificial Intelligence NANODEGREE, so I hope I'll use more sophisticated/appropriate NN in next itiration of this project.
 
 Such things were tried before in financial markets but wasn't very conclusive because there is many big players who can move markets, in cryptocurencies (a way smaller capitalisation) it's a bit different - there are many small players and a few big instituions so social medias have more influence than in equity market for example. 
@@ -89,7 +90,7 @@ My evaluation metric will be ...
 
 ### Project Design
 
-EXTRACTION OF TWEETS
+EXTRACTION OF TWEETS AND NEWS
 
 
 
@@ -98,10 +99,21 @@ PREPROCESSING and Word Embeddings -----------------------------------------
 
 I'll use In learning based techniques, before training the classifier, we need to select the words/features that we will use in your model. We  can’t just use all the words that the tokenization algorithm returned (ex: NLTK) because there are several irrelevant words within them. so we need to clean the data from irrelevant information like links, certain stop words, icons, etc...
 
-Word embedding is a technique where words are encoded as real-valued vectors in a high-dimensional space, where the similarity between words in terms of meaning translates to closeness in the vector space. https://en.wikipedia.org/wiki/Word_embedding
-Discrete words are mapped to vectors of continuous numbers. This is useful when working with natural language problems and deep learning models we are require numbers as input.
+Also I need to investigate hastags, should I use them or not.
 
 EXPLORATION AND STATS -----------------------------------------
+
+
+MOOD EXTRACTION ------------------------------------------
+For Mood extraction I'll try this existing tools (certain tools are written in Java, I'll see if I can handle it):
+  - OpinionFinder that measures positive /negative mood (http://mpqa.cs.pitt.edu/opinionfinder/)
+  - Google-Profile of Mood States (Calm, Alert, Sure, Vital, Kind, and Happy)
+  - CoreNLP (https://nlp.stanford.edu/sentiment/), How to Build an Email Sentiment Analysis Bot: An NLP Tutorial https://www.toptal.com/java/email-sentiment-analysis-bot
+  - Natural Language Classifier by IBM Watson, In the Bluemix Catalog (https://github.com/watson-developer-cloud/python-sdk/tree/master/examples)
+  - Microsoft LUIS (https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/)
+  ...
+  
+
 
 SIMPLE CLASSIFIERS FOR SENTIMENT -----------------------------------------
 
@@ -113,13 +125,6 @@ For example you might find that Max Entropy with Chi-square as feature selection
 https://www.quora.com/What-kind-of-algorithms-do-we-use-for-sentiment-analysis-Is-there-any-list-for-the-algorithms-and-about-their-structure
 
 
-NN FOR SENTIMENT -----------------------------------------
-In word2vec, this is cast as a feed-forward neural network and optimized as such using SGD
--  for short texts Naive Bayes may perform better than Support Vector Machines
-I used unigrams and bigrams without removing stopwords but removing proper nouns as my features. Presence, Count or TfIdf score were used depending on classifier as Presence gave better results with Naive Bayes while Tf Idf gave better results with Linear SVM. I then, did an association measure test based on chi square/poisson stirling ratio/likelihood ratio to find the most informative features and used them to train the model. 
-
-
-https://github.com/turi-code/tutorials/blob/master/notebooks/deep_text_learning.ipynb
 
 There is two very interesting Deep Learning inspired tools for text analysis. The first is the Word2Vec (https://en.wikipedia.org/wiki/Word2vec) algorithm and the second tool is GloVe (https://nlp.stanford.edu/projects/glove/). Both of these representation learning algorithms seemed really useful for analyzing text. I'll use Word2Vec because word2vec is a "predictive" model and GloVe is a "count-based" model.(https://www.quora.com/How-is-GloVe-different-from-word2vec)
 
@@ -138,11 +143,6 @@ Cleaning the data from irrelevant news as well as advertisements/bio(if you have
 The exciting part, I believe, is that the results obtained in this way are better than the known state-of-the-art algorithm for this problem. But I still need to perform additional tests to verify this conclusion.
 
 If you want to try Deep Learning on text, take a look at my IPython notebook that describes in detail how to create a text classifier using Word2Vec and GraphLab Create. You can use it to create your own blogger gender and age classifier, or construct your own deep text classifiers for other NLP tasks.
-
-NN -----------------------------------------
-  
-
-
 
 -------------------
 
