@@ -4,11 +4,6 @@ Anton Levashov
 September 13st, 2017
 
 
-http://www.sciencedirect.com/science/article/pii/S2090447914000550
-https://www.cse.iitb.ac.in/~pb/cs626-449-2009/prev-years-other-things-nlp/sentiment-analysis-opinion-mining-pang-lee-omsa-published.pdf
-https://machinelearningmastery.com/predict-sentiment-movie-reviews-using-deep-learning/
-
-
 ## Proposal
 
 The purpose of this project is to create a small module for a future trading bot, this bot will take different positions in crypthocurency market. 
@@ -74,12 +69,15 @@ https://medium.com/@binsumi/neural-networks-and-bitcoin-d452bfd7757e
 
 
 ### Solution Statement
-To find the sentiment of the tweets and other data seources, and they correaltion to the market I want to try as many classification methods as possible. Because different algorithms can deliver different results. Generally it is expected that state of the art classification techniques such as SVM would outperform more simple techniques such as Naïve Bayes, and tools using NN can outperforme all other solutions. But the finall solution must be viable for implimentaion into production enviroment and predict more accurate the direction of market movement on he given day. What will be interesting is to find: how the degree of importance of different data sources (ex: famous crypto twitter that everyone follows) affect ou correlate with the price of coin. Too optimized the implementation, I'll use NLTK. It is a python library for text processing, and can be used to help in implementation of certain algorithms (ex : support vector machine).
-
+To find the sentiment of the tweets and other data seources, and they correaltion to the market and other variables I want to try as many classification methods as possible. Because different algorithms can deliver different results. Generally it is expected that state of the art classification techniques such as SVM would outperform more simple techniques such as Naïve Bayes, and tools using NN can outperforme all other solutions. But the finall solution must be viable for implimentaion into production enviroment and predict more accurate the direction of market movement on he given day. What will be interesting is to find: how the degree of importance of different data sources (ex: famous crypto twitter that everyone follows) affect ou correlate with the price of coin. Too optimized the implementation, I'll use NLTK. It is a python library for text processing, and can be used to help in implementation of the algorithms.
 
 ### Benchmark Model
--First I will use classification using the Naïve Bayes Classifier to have a minimum accuracy. Feauther I will try to improved accuracy by using the feature selection method. Also the classification accuracy of Maximum Entropy Classifier is better than the Naïve Bayes Classifier but still less than the Naïve Bayes Classifier with Feature Selection based on Entropy Method whose accuracy is further less than the Maximum Entropy Classifier with Feature Selection based on Entropy Method.
-After some research I found that maximum Entropy Classifier with Feature Selection based on Entropy Method is best for classification of a given input. So my benchmark model will be NB Classifier (compared against a random predicition). 
+- My first benchmark model will be a random model wich predicts the most popular class. After I'll try some algorithms like linear regression, random forest etc... following this course https://www.udacity.com/course/machine-learning-for-trading--ud501. 
+And then I'll compare my NN model to the previous and will chose the best model in terme of siplicity and performance.
+
+SORUCES:
+Algorithmic Trading of Futures via Machine Learning
+http://cs229.stanford.edu/proj2014/David%20Montague,%20Algorithmic%20Trading%20of%20Futures%20via%20Machine%20Learning.pdf
 
 
 ### Evaluation Metrics
@@ -93,7 +91,7 @@ My evaluation metric will be ...
 EXTRACTION OF TWEETS AND NEWS
 For the blog posts I'll use Scrapy, a handy Python package for text scraping. If it will take to much time to create a good scraper I'll just use tweets for thi project. For tweets I'll use dedicataed API and libraries (ex https://dev.twitter.com/resources/twitter-libraries).
 
-PREPROCESSING ------------------------------------------
+PREPROCESSING AND NOISE REMOVAL ------------------------------------------
 Before giving text to our mood extraction tools, we need to select the words/features that we will use in our model. We  can’t just use all the words that the tokenization algorithm returned (ex: NLTK) because there are several irrelevant words within them, so we need to clean the data from irrelevant information like links, certain stop words, icons, etc... I don't know yet if I need tokenise the text or  just remove some words, tags, links etc... and feed it to mood extractor. Also I need to investigate hastags, should I use them or not.
 
 MOOD EXTRACTION ------------------------------------------
@@ -107,10 +105,22 @@ For Mood extraction I'll try this existing tools (certain tools are written in J
   
 
 VARIABLE TO USE
+To manage this risk, bitcoin traders can combine fundamental analysis with technical analysis. For example, a fundamental analyst might look at several indicators of demand, concluding that bitcoin is underbought, and then leverage technical analysis by reading charts to find the best entry point.
+
+ "A Novel Algorithmic Trading Framework Applying Evolution and Machine Learning for Portfolio Optimization" (2012). It's an extensive review of different machine learning approaches compared against buy-and-hold. After almost 200 pages, they reach the basic conclusion: "No trading system was able to outperform the benchmark when using transaction costs." 
+http://blog.andersen.im/wp-content/uploads/2012/12/ANovelAlgorithmicTradingFramework.pdf
+
+00000000000000000000000
+The idea of AI algorithms is not to build Chip and let him trade for you, but to automate the process of creating strategies.
+00000000000000000000000
+
+- technical analys
 - sentiment of the data source
 - volume of transaction
-- 
-- 
+- user adoption,
+- number of transactions
+- Major events par coin
+- media exposure, if one coin is more expose than other we can see a lot of movement
 
 VARIABLE TO PREDICT
 - price
@@ -127,8 +137,7 @@ Implementing a CNN for Text Classification in TensorFlow
 http://www.wildml.com/2015/12/implementing-a-cnn-for-text-classification-in-tensorflow/
 -------------------
 https://www.quora.com/What-kind-of-algorithms-do-we-use-for-sentiment-analysis-Is-there-any-list-for-the-algorithms-and-about-their-structure
-2 Noise Removal
-Cleaning the data from irrelevant news as well as advertisements/bio(if you have collected data by web crawling)
+)
 3 Feature Selection
 In learning based techniques, before training the classifier, you must select the words/features that you will use on your model. You can’t just use all the words  because there are several irrelevant words within them.
 The features can be unigrams and/or bigrams or higher ngrams with/without punctuation and with/without stopwords.
