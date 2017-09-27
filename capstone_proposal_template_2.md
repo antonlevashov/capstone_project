@@ -1,10 +1,14 @@
 # Machine Learning Engineer Nanodegree
 ## Capstone Proposal
-Joe Udacity  
-December 31st, 2050
+Anton Levashov 
+27/09/2017
 
 ## Proposal
 _(approx. 2-3 pages)_
+
+
+- Logo recognition on photos from social medias.
+- 
 
 ### Domain Background
 _(approx. 1-2 paragraphs)_
