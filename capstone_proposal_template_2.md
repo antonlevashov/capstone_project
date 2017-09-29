@@ -8,7 +8,9 @@ _(approx. 2-3 pages)_
 
 
 - Logo recognition on photos from social medias.
-- 
+- use of convolutional neural networks
+- data augmentation
+
 
 ### Domain Background
 _(approx. 1-2 paragraphs)_
