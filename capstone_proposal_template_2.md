@@ -5,24 +5,21 @@ Anton Levashov
 
 ## Proposal
 In this project I'll use Convolutional Neural Networks to find brand logos in photographs uploaded to
-different social media websites, I'll start with Instagram. CNNs are the best available method for image classification/treatement in both performance and "simplicity" (we can use them in production enviroment). Training neural networks needs a large
-number of training examples, and our dataset contains rather few training examples, so I'll use Data Augmentation to increase the  size of our training/validation/testing sets by taking each training image and creating multiple random transformations around the bounding box of the logo using ImageDataGenerator from Keras. I'll also "synthesize" some aditional images by clipping logos on images from other sources. 
+different social media websites, I'll start with Instagram. CNNs are the best available method for image classification/treatement in both performance and "simplicity" (we can use them in production enviroment). Training neural networks needs a large number of training examples, and our dataset contains rather few training examples, so I'll use Data Augmentation to increase the  size of our training/validation/testing sets by taking each training image and creating multiple random transformations around the bounding box of the logo using ImageDataGenerator from Keras. I'll also "synthesize" some aditional images by clipping logos on images from other sources. 
 
 I'll also use image segmentation to generate region proposals where the logo might reside, which we can classify separately before
 assigning to each image the label of the region whose predicted classification has the highest confidence. Both of these methods result in dramatic improvements in classification accuracy.
 
 Also to reduce traning time I'll use Transfer Learning, as it's an important concept for Deep Learning. In transfer Learning we retrain the already trained models by giving the input as own dataset. We can reduce the size of data required for training and also the training time. The training utilizes the weights from the already trained model (bottleneck features) and starts learning new weights in the last fully conected layers. I'll try and comapre a few models:  Xception, ResNet-50, InceptionV4 and other model I come a crosse.
 
-
-
 Sources:
 https://medium.com/towards-data-science/neural-network-architectures-156e5bad51ba
 http://cs231n.stanford.edu/reports/2015/pdfs/jiahan_final_report.pdf
-http://matthewearl.github.io/2016/05/06/cnn-anpr/
 
 
 ### Domain Background
 I think today there is a lot of potential in extracting information from images in social medias. If we take the example of Instagram we can only extract a few peaces of info from bio, short description, hashtags and few comments everything else is in the photos that people put on Instagram. I was thinking about it a few years qgo but in order to succed you needed a lot of resources and results wasnt so fantastic. I think today is different we have working CNNs, datasets, cheap infrastructure (ex: EC2). There is already some players who tries to extract information from images and use it to better target advertisement campains. 
+
 https://www.brandwatch.com/blog/top-5-image-recognition-tools/
 
 ### Problem Statement
@@ -39,8 +36,13 @@ I'll cropped every logo (or take them from official web site) and performed some
 
 ### Solution Statement
 _(approx. 1 paragraph)_
+I'll approach the problem as both a classification problem (classifying images that contain one or more instances
+of a single logo) as well as a detection problem (determining whether or not an image contains a logo). In this project I'll use  Convolutional Neural Networks, a model that was pretrained on the ImageNet Large Scale Visual Recognition Challenge. Training neural networks needs a large number of training examples, and our dataset contains rather few training examples, so I'll use Data Augmentation to increase the  size of our training/validation/testing sets by taking each training image and creating multiple random transformations around the bounding box of the logo using ImageDataGenerator from Keras.
+I'll also study the use of a sliding window method and an image-segmentation based approach for generating region proposals where the logo might be. To "synthesize" some aditional images I'll paste logos on images from other sources. In the end the solution should classify images as logo/no logo present and if logo is present give an istimation wich logo amog 47 is present in the given image.
 
-In this section, clearly describe a solution to the problem. The solution should be applicable to the project domain and appropriate for the dataset(s) or input(s) given. Additionally, describe the solution thoroughly such that it is clear that the solution is quantifiable (the solution can be expressed in mathematical or logical terms) , measurable (the solution can be measured by some metric and clearly observed), and replicable (the solution can be reproduced and occurs more than once).
+Source:
+http://matthewearl.github.io/2016/05/06/cnn-anpr/
+
 
 ### Benchmark Model
 _(approximately 1-2 paragraphs)_
@@ -57,6 +59,13 @@ _(approx. 1 page)_
 
 In this final section, summarize a theoretical workflow for approaching a solution given the problem. Provide thorough discussion for what strategies you may consider employing, what analysis of the data might be required before being used, or which algorithms will be considered for your implementation. The workflow and discussion that you provide should align with the qualities of the previous sections. Additionally, you are encouraged to include small visualizations, pseudocode, or diagrams to aid in describing the project design, but it is not required. The discussion should clearly outline your intended workflow of the capstone project.
 
+
+Sources:
+https://arxiv.org/abs/1610.02357
+https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html
+https://arxiv.org/pdf/1605.07678.pdf
+https://distill.pub/2016/augmented-rnns/
+http://www.codesofinterest.com/2017/08/bottleneck-features-multi-class-classification-keras.html
 -----------
 
 **Before submitting your proposal, ask yourself. . .**
