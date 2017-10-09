@@ -4,23 +4,29 @@ Anton Levashov
 27/09/2017
 
 ## Proposal
+In this project I'll use Convolutional Neural Networks to find brand logos in photographs uploaded to
+different social media websites, I'll start with Instagram. CNNs are the best available method for image classification/treatement in both performance and "simplicity" (we can use them in production enviroment). Training neural networks needs a large
+number of training examples, and our dataset contains rather few training examples, so I'll use Data Augmentation to increase the  size of our training/validation/testing sets by taking each training image and creating multiple random transformations around the bounding box of the logo using ImageDataGenerator from Keras. I'll also "synthesize" some aditional images by clipping logos on images from other sources. 
 
-- Logo recognition on Instagram photos.
+I'll also use image segmentation to generate region proposals where the logo might reside, which we can classify separately before
+assigning to each image the label of the region whose predicted classification has the highest confidence. Both of these methods result in dramatic improvements in classification accuracy.
 
-- Sentiment analisys of the comment section in Instagram.
-- use of convolutional neural networks
-- data augmentation and create new dataset
+Also to reduce traning time I'll use Transfer Learning, as it's an important concept for Deep Learning. In transfer Learning we retrain the already trained models by giving the input as own dataset. We can reduce the size of data required for training and also the training time. The training utilizes the weights from the already trained model (bottleneck features) and starts learning new weights in the last fully conected layers. I'll try and comapre a few models:  Xception, ResNet-50, InceptionV4 and other model I come a crosse.
+
+
+
+Sources:
+https://medium.com/towards-data-science/neural-network-architectures-156e5bad51ba
+http://cs231n.stanford.edu/reports/2015/pdfs/jiahan_final_report.pdf
+http://matthewearl.github.io/2016/05/06/cnn-anpr/
 
 
 ### Domain Background
-_(approx. 1-2 paragraphs)_
-
-In this section, provide brief details on the background information of the domain from which the project is proposed. Historical information relevant to the project should be included. It should be clear how or why a problem in the domain can or should be solved. Related academic research should be appropriately cited in this section, including why that research is relevant. Additionally, a discussion of your personal motivation for investigating a particular problem in the domain is encouraged but not required.
+I think today there is a lot of potential in extracting information from images in social medias. If we take the example of Instagram we can only extract a few peaces of info from bio, short description, hashtags and few comments everything else is in the photos that people put on Instagram. I was thinking about it a few years qgo but in order to succed you needed a lot of resources and results wasnt so fantastic. I think today is different we have working CNNs, datasets, cheap infrastructure (ex: EC2). There is already some players who tries to extract information from images and use it to better target advertisement campains. 
+https://www.brandwatch.com/blog/top-5-image-recognition-tools/
 
 ### Problem Statement
-_(approx. 1 paragraph)_
-
-In this section, clearly describe the problem that is to be solved. The problem described should be well defined and should have at least one relevant potential solution. Additionally, describe the problem thoroughly such that it is clear that the problem is quantifiable (the problem can be expressed in mathematical or logical terms) , measurable (the problem can be measured by some metric and clearly observed), and replicable (the problem can be reproduced and occurs more than once).
+Almost all brands today need image detection to work out where their customers, prospects, critics, and fans. To better target they campaign (know the age, sex, activites and location of peopel on Instagram), to mesure the effectivenes, to "sample" the mood, to follow the live of the products and etc...   Without extracting these information from images, a brand is simply "blind"to all opportunities directed at them each day. Brand can't relly on the classical markenting as almost everyone spend the most of his free time on social medias. And social medias today are more about images and videos than about text. So we need tools to exctract the information from images. The good start will be a logo recognition system, combined with some NLP and available (very few) information available on Instagram, this system can deliver basic statistics like Sentiment Analysis about brend, presents of given brend (and it competitors), people who use it, the context of images, etc... Once we have these classified images we can undertake differents analysis, better understand brend customers and also follow/improve the marketing strategy.
 
 ### Datasets and Inputs
 I'll use FlickrLogos-47 logo dataset (it is publicly available).
