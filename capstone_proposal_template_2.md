@@ -34,8 +34,13 @@ FlickrLogos-47 is a very small dataset for Deep Learning problem but using Data 
 
 I'll cropped every logo (or take them from official web site) and performed some transformations like horizontal flip, vertical flip, adding noise, rotation, blurring etc. Then pasting each of transformed images to images with no logos at some random location on it, as well as recording location co-ordinates that will work as annotations for training later. After this, I'll have around 100,000 examples wich I'll divied in training, validation and test sets. For the test set I'll use half of the FlickrLogos-47 (or maybe even all images) to see how CNN trained with "artificial" images perform on real data.
 
+The dataset will also contains images with no logo in them. These can be used to calibrate a precision-recall curve, as the bulk of images in the wild will indeed not contain a logo and should not be falsely classified as having one. 
+
+
+Fast Image Data Annotation Tool (FIAT)
+https://github.com/christopher5106/FastAnnotationTool
+
 ### Solution Statement
-_(approx. 1 paragraph)_
 I'll approach the problem as both a classification problem (classifying images that contain one or more instances
 of a single logo) as well as a detection problem (determining whether or not an image contains a logo). In this project I'll use  Convolutional Neural Networks, a model that was pretrained on the ImageNet Large Scale Visual Recognition Challenge. Training neural networks needs a large number of training examples, and our dataset contains rather few training examples, so I'll use Data Augmentation to increase the  size of our training/validation/testing sets by taking each training image and creating multiple random transformations around the bounding box of the logo using ImageDataGenerator from Keras.
 I'll also study the use of a sliding window method and an image-segmentation based approach for generating region proposals where the logo might be. To "synthesize" some aditional images I'll paste logos on images from other sources. In the end the solution should classify images as logo/no logo present and if logo is present give an istimation wich logo amog 47 is present in the given image.
@@ -49,10 +54,11 @@ _(approximately 1-2 paragraphs)_
 
 In this section, provide the details for a benchmark model or result that relates to the domain, problem statement, and intended solution. Ideally, the benchmark model or result contextualizes existing methods or known information in the domain and problem given, which could then be objectively compared to the solution. Describe how the benchmark model or result is measurable (can be measured by some metric and clearly observed) with thorough detail.
 
-### Evaluation Metrics
-_(approx. 1-2 paragraphs)_
 
-In this section, propose at least one evaluation metric that can be used to quantify the performance of both the benchmark model and the solution model. The evaluation metric(s) you propose should be appropriate given the context of the data, the problem statement, and the intended solution. Describe how the evaluation metric(s) are derived and provide an example of their mathematical representations (if applicable). Complex evaluation metrics should be clearly defined and quantifiable (can be expressed in mathematical or logical terms).
+
+### Evaluation Metrics
+Setting aside the images whiout logo, I'll first treat the problem as a classification problem with 47 categories for each image.
+Then each example in the test set can be assigned exactly one label, and I'll measure the accuracy of our classifiers in predicting the label of each test image. I'll also try to include the images whiout logo in the test procedure and treat this problem as a detection one - configure the models to label as ’whiout logo’ those images whose predictions are made below a certain level of certainty, and then see how the classification rate and false positive rate change as L vary this confidence threshold parameter.
 
 ### Project Design
 _(approx. 1 page)_
