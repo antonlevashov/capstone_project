@@ -4,10 +4,16 @@ Anton Levashov
 27/09/2017
 
 ## Proposal
-In this project I'll use Convolutional Neural Networks to find brand logos in photographs uploaded to
-different social media websites, I'll start with Instagram. CNNs are the best available method for image classification/treatement in both performance and "simplicity" (we can use them in production enviroment). Training neural networks needs a large number of training examples, and our dataset contains rather few training examples, so I'll use Data Augmentation to increase the  size of our training/validation/testing sets by taking each training image and creating multiple random transformations around the bounding box of the logo using ImageDataGenerator from Keras. I'll also "synthesize" some aditional images by clipping logos on images from other sources. 
+I'll use the following chalenge for the capstone project : Cdiscount’s Image Classification Challenge on Kaggle (https://www.kaggle.com/c/cdiscount-image-classification-challenge). Here is the brief description:
+In this challenge you will be building a model that automatically classifies the products based on their images. As a quick tour of Cdiscount.com's website can confirm, one product can have one or several images. The data set Cdiscount.com is making available is unique and characterized by superlative numbers in several ways:
 
-I'll also use image segmentation to generate region proposals where the logo might reside, which we can classify separately before
+- Almost 9 million products: half of the current catalogue
+- More than 15 million images at 180x180 resolution
+- More than 5000 categories: yes this is quite an extreme multi-class classification!
+
+In this project I'll use Convolutional Neural Networks to classifie images uploaded to Cdiscount website. CNNs are the best available method for image classification/treatement in both performance and "simplicity" (we can use them in production enviroment). Training neural networks needs a large number of training examples (in this competition we given 7000000 iamges for test and 1700000 training sets), I'll also try to use Data Augmentation to increase the  size of our training/validation/testing sets by taking each training image and creating multiple random transformations around the bounding box of the object using ImageDataGenerator from Keras. 
+
+I'll also use image segmentation to generate region proposals where the object might reside, which we can classify separately before
 assigning to each image the label of the region whose predicted classification has the highest confidence. Both of these methods result in dramatic improvements in classification accuracy.
 
 Also to reduce traning time I'll use Transfer Learning, as it's an important concept for Deep Learning. In transfer Learning we retrain the already trained models by giving the input as own dataset. We can reduce the size of data required for training and also the training time. The training utilizes the weights from the already trained model (bottleneck features) and starts learning new weights in the last fully conected layers. I'll try and comapre a few models:  Xception, ResNet-50, InceptionV4 and other model I come a crosse.
@@ -15,28 +21,39 @@ Also to reduce traning time I'll use Transfer Learning, as it's an important con
 Sources:
 https://medium.com/towards-data-science/neural-network-architectures-156e5bad51ba
 http://cs231n.stanford.edu/reports/2015/pdfs/jiahan_final_report.pdf
-
+https://www.kaggle.com/c/cdiscount-image-classification-challenge/
 
 ### Domain Background
-I think today there is a lot of potential in extracting information from images in social medias. If we take the example of Instagram we can only extract a few peaces of info from bio, short description, hashtags and few comments everything else is in the photos that people put on Instagram. I was thinking about it a few years qgo but in order to succed you needed a lot of resources and results wasnt so fantastic. I think today is different we have working CNNs, datasets, cheap infrastructure (ex: EC2). There is already some players who tries to extract information from images and use it to better target advertisement campains. 
+Cdiscount.com generated nearly 3 billion euros last year, making it France’s largest non-food e-commerce company. While the company already sells everything from TVs to trampolines, the list of products is still rapidly growing. By the end of this year, Cdiscount.com will have over 30 million products up for sale. This is up from 10 million products only 2 years ago. Ensuring that so many products are well classified is a challenging task.
+
+Currently, Cdiscount.com applies machine learning algorithms to the text description of the products in order to automatically predict their category. As these methods now seem close to their maximum potential, Cdiscount.com believes that the next quantitative improvement will be driven by the application of data science techniques to images.
+
 
 https://www.brandwatch.com/blog/top-5-image-recognition-tools/
 
 ### Problem Statement
+
+The goal of this competition is to predict the category of a product based on its image(s). Note that a product can have one or several images associated. For every product _id in the test set, you should predict the correct category_id.
+
 Almost all brands today need image detection to work out where their customers, prospects, critics, and fans. To better target they campaign (know the age, sex, activites and location of peopel on Instagram), to mesure the effectivenes, to "sample" the mood, to follow the live of the products and etc...   Without extracting these information from images, a brand is simply "blind"to all opportunities directed at them each day. Brand can't relly on the classical markenting as almost everyone spend the most of his free time on social medias. And social medias today are more about images and videos than about text. So we need tools to exctract the information from images. The good start will be a logo recognition system, combined with some NLP and available (very few) information available on Instagram, this system can deliver basic statistics like Sentiment Analysis about brend, presents of given brend (and it competitors), people who use it, the context of images, etc... Once we have these classified images we can undertake differents analysis, better understand brend customers and also follow/improve the marketing strategy.
 
 ### Datasets and Inputs
-I'll use FlickrLogos-47 logo dataset (it is publicly available).
-The FlickrLogos dataset consists of real-world images collected from Flickr depicting company logos in various circumstances. The dataset comes in two versions: The original FlickrLogos-32 dataset and the FlickrLogos-47 dataset. FlickrLogos-32 was designed for logo retrieval and multi-class logo detection and object recognition. However, the annotations for object detection were often incomplete,since only the most prominent logo instances were labelled. FlickrLogos-47 uses the same image corpus as FlickrLogos-32 but has been re-annotated specifically for the task of object detection and recognition. New classes were introduced (i.e. the company logo and text are now treated as separate classes where applicable) and missing object instances have been annotated.
-(Source: http://www.multimedia-computing.de/flickrlogos/)
+This competion uses BSON Files. BSON, short for Binary JSON, is a binary-encoded serialization of JSON-like docments, used with MongoDB. 
+There is more than 15 million images in total at 180x180 resolution.
 
-FlickrLogos-47 is a very small dataset for Deep Learning problem but using Data Augmentation techniques it can be transformed to a bigger dataset suitable for training.
+File Descriptions:
 
-I'll cropped every logo (or take them from official web site) and performed some transformations like horizontal flip, vertical flip, adding noise, rotation, blurring etc. Then pasting each of transformed images to images with no logos at some random location on it, as well as recording location co-ordinates that will work as annotations for training later. After this, I'll have around 100,000 examples wich I'll divied in training, validation and test sets. For the test set I'll use half of the FlickrLogos-47 (or maybe even all images) to see how CNN trained with "artificial" images perform on real data.
+- train.bson - (Size: 58.2 GB) Contains a list of 7,069,896 dictionaries, one per product. Each dictionary contains a product id (key: _id), the category id of the product (key: category_id), and between 1-4 images, stored in a list (key: imgs). Each image list contains a single dictionary per image, which uses the format: {'picture': b'...binary string...'}. The binary string corresponds to a binary representation of the image in JPEG format. This kernel provides an example of how to process the data.
 
-The dataset will also contains images with no logo in them. These can be used to calibrate a precision-recall curve, as the bulk of images in the wild will indeed not contain a logo and should not be falsely classified as having one. 
+- train_example.bson - Contains the first 100 records of train.bson so you can start exploring the data before downloading the entire set.
 
+- test.bson - (Size: 14.5 GB) Contains a list of 1,768,182 products in the same format as train.bson, except there is no category_id included. The objective of the competition is to predict the correct category_id from the picture(s) of each product id (_id). The category_ids that are present in Private Test split are also all present in the Public Test split.
 
+- category_names.csv - Shows the hierarchy of product classification. Each category_id has a corresponding level1, level2, and level3 name, in French. The category_id corresponds to the category tree down to its lowest level. This hierarchical data may be useful, but it is not necessary for building models and making predictions. All the absolutely necessary information is found in train.bson.
+
+- sample_submission.csv - Shows the correct format for submission. It is highly recommended that you zip your submission file before uploading for scoring.
+
+https://www.kaggle.com/c/cdiscount-image-classification-challenge/data
 Fast Image Data Annotation Tool (FIAT)
 https://github.com/christopher5106/FastAnnotationTool
 
@@ -56,9 +73,13 @@ In this section, provide the details for a benchmark model or result that relate
 
 
 
+
+
 ### Evaluation Metrics
 Setting aside the images whiout logo, I'll first treat the problem as a classification problem with 47 categories for each image.
 Then each example in the test set can be assigned exactly one label, and I'll measure the accuracy of our classifiers in predicting the label of each test image. I'll also try to include the images whiout logo in the test procedure and treat this problem as a detection one - configure the models to label as ’whiout logo’ those images whose predictions are made below a certain level of certainty, and then see how the classification rate and false positive rate change as L vary this confidence threshold parameter.
+
+This competition is evaluated on the categorization accuracy of your predictions (the percentage of products you get correct).
 
 ### Project Design
 _(approx. 1 page)_
