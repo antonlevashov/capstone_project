@@ -4,7 +4,7 @@ Anton Levashov
 27/09/2017
 
 ## Proposal
-I'll use the following chalenge for the capstone project : Cdiscount’s Image Classification Challenge on Kaggle (https://www.kaggle.com/c/cdiscount-image-classification-challenge). I hope this project will help me understand better all details about different CNNs and learn from the wonderful community on Kaggle, how to use and tune the neural networks. What works and what dosen't.
+I'll use the following chalenge for the capstone project : Cdiscount’s Image Classification Challenge on Kaggle (https://www.kaggle.com/c/cdiscount-image-classification-challenge). I hope this project will help me understand better all details about different CNNs and learn from the wonderful community on Kaggle, how to use and tune the neural networks. In this chalenge data set is huge, to train a model I'll need to precisly tune it because it will takes many hours just to run one epoch on 30-40GB GPU cluster.
 
 Here is the brief description:
 In this challenge you will be building a model that automatically classifies the products based on their images. As a quick tour of Cdiscount.com's website can confirm, one product can have one or several images. The data set Cdiscount.com is making available is unique and characterized by superlative numbers in several ways:
@@ -27,6 +27,7 @@ https://medium.com/towards-data-science/neural-network-architectures-156e5bad51b
 http://cs231n.stanford.edu/reports/2015/pdfs/jiahan_final_report.pdf
 https://www.kaggle.com/c/cdiscount-image-classification-challenge/
 
+
 ### Domain Background
 Cdiscount.com generated nearly 3 billion euros last year, making it France’s largest non-food e-commerce company. While the company already sells everything from TVs to trampolines, the list of products is still rapidly growing. By the end of this year, Cdiscount.com will have over 30 million products up for sale. This is up from 10 million products only 2 years ago. Ensuring that so many products are well classified is a challenging task.
 
@@ -44,12 +45,10 @@ This competion uses the real-world data sets, from current catalogue of products
 BSON, short for Binary JSON, is a binary-encoded serialization of JSON-like docments, used with MongoDB. 
 There is more than 15 million images in total at 180x180 resolution.
 
-Apparently the number of training examples (images) per class (category) varies a lot in the training set, from over 80000 in the classes with most training examples to just 12 in the class with the least. So we can assume that the testing set has a different distribution and a class with just a few images in the training set can have thousands of images in the test set.
+Apparently the number of training examples (images) per class (category) varies a lot in the training set, from over 80000 in the classes with most training examples to just 12 in the class with the least. So we can assume that the testing set has a different distribution and a class with just a few images in the training set can have thousands of images in the test set - imbalance problem is present.
 
 Also someone noticed that product id values have strong relation to category_id. There's the histogram of top 10 frequent items by product id (X-axis label 0.5 means product id 5,000,000, 2.0 is 20,000,000, etc)
 https://www.kaggle.com/c/cdiscount-image-classification-challenge/discussion/41650
-
-
 
 File Descriptions:
 
@@ -58,7 +57,6 @@ File Descriptions:
 - test.bson - (Size: 14.5 GB) Contains a list of 1,768,182 products in the same format as train.bson, except there is no category_id included. The objective of the competition is to predict the correct category_id from the picture(s) of each product id (_id). The category_ids that are present in Private Test split are also all present in the Public Test split.
 
 - category_names.csv - Shows the hierarchy of product classification. Each category_id has a corresponding level1, level2, and level3 name, in French. The category_id corresponds to the category tree down to its lowest level. This hierarchical data may be useful, but it is not necessary for building models and making predictions. All the absolutely necessary information is found in train.bson.
-
 
 
 https://www.kaggle.com/c/cdiscount-image-classification-challenge/data
@@ -113,6 +111,8 @@ This competition is evaluated on the categorization accuracy of the predictions 
 
 
 ### Project Design
+
+## PRE-PROCESSING
 - Laoding Datat:
 There is a kernel created by Cdiscount about how to load BSON files in python notebook: https://www.kaggle.com/inversion/processing-bson-files. If I it will be difficult to load all data I'll use MongoDB. Here is a great tutorial on how to do it https://www.kaggle.com/c/cdiscount-image-classification-challenge/discussion/41193.
 
@@ -125,7 +125,6 @@ Sklearn complains about the stratified split with 10000 values because some clas
 - Data augmentation part:
 
 
-
 I would try to do an upsampling from 180x180 to 224x224 and adding some data augmentation. But apparently it makes more sense to use dilated convolutions instead, since then the input is not interpolated, but it still maintains high resolution feature maps. The low-level layers can still stay the same and use the imagenet weights as initialization since these are pretty much only simple filters (which for example react to edges, like Sobel). The mid- to high-level filters will probably have to change a lot though, it may make sense to use dilated convolutions there.
 https://github.com/Cadene/pretrained-models.pytorch/issues/8
 https://www.reddit.com/r/MachineLearning/comments/52drsq/what_is_dilated_convolution/
@@ -134,15 +133,46 @@ http://colah.github.io/posts/2014-12-Groups-Convolution/
 The model that got stuck was high capacity but colour/saturation augmentation was enabled. The one that's still chugging along and doing much better only had random crop/scale and rotation. Tthe prevalence of almost constant black or white backgrounds in most images means that adding variability to that requires much more learning than leaving it as it is.
 Next angle is to see if disabling the random crop and just leaving h-flip and a bit of rotation on does better... basically assuming that the preprocessing of the competition dataset leaves things relatively well centred and similarly scaled across train and test datasets. 
 
-- Keras importance sampling
+## MODEL TRAINING
+
+- Keras Importance Sampling:
+Imbalance probleme is present in this cahllenge - the distribution of the samples vary a lot. The use of importance sampling can help. Importance sampling focuses the computation to informative/important samples (by sampling mini-batches from a distribution other than uniform) thus accelerating the convergence. Also importance sampling has been successfully used to accelerate stochastic optimization in many convex problems (this method results in 30% faster training of a CNN for CIFAR10 than when using uniform sampling).
+http://idiap.ch/~katharas/importance-sampling/
+https://github.com/idiap/importance-sampling
+
+"Sample Importance in Training Deep Neural Networks"
+https://openreview.net/forum?id=r1IRctqxg
+"A systematic study of the class imbalance problem in convolutional neural networks"
+https://arxiv.org/pdf/1710.05381.pdf
+"Biased Importance Sampling for Deep Neural Network Training" 
+https://arxiv.org/abs/1706.00043
+
+- The use of hard samples:
+Based on the prediction scores, it can identify which training (and testing) samples are difficult. Training and testing datasets contain an overwhelming number of easy examples and a small number of hard examples. Automatic selection of these hard examples can make training more effective and efficient. We can speedup training with less samples.
+[Original disscusion on Kaggle](https://www.kaggle.com/c/cdiscount-image-classification-challenge/discussion/41523)
+
+["Curriculum Learning with Deep Convolutional Neural Networks"](http://kth.diva-portal.org/smash/get/diva2:878140/FULLTEXT01.pdf) Apparently we can speedup training with less samples. 
+
+["Training Region-based Object Detectors with Online Hard Example Mining"](https://arxiv.org/abs/1604.03540) OHEM is a simple and intuitive algorithm that eliminates several heuristics and hyperparameters in common use.
+
+
 
 
 - Learning Rate:
-
 https://arxiv.org/abs/1705.11159 "Reinforcement Learning for Learning Rate Control, an algorithm to automatically learn learning rates using neural network based actor-critic methods from deep reinforcement learning (RL)"
+
+- Batch Size:
+
+"Online Batch Selection for Faster Training of Neural Networks"
+https://arxiv.org/abs/1706.00043
+
+## PREDICTION
+
 
 PS:
 I'll use EC2 for GPU.
+
+DEEPSENSE.AI and neptune.ml
 I'l also try deepsense.ai, signing up at https://neptune.ml will get  me $100 to train my models. (https://www.kaggle.com/c/cdiscount-image-classification-challenge/discussion/41478). The full functional deepsense.ai experiment example can be found here:
 https://www.kaggle.com/c/cdiscount-image-classification-challenge/discussion/41506
 
