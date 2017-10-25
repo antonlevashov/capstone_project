@@ -36,19 +36,20 @@ Currently, Cdiscount.com applies machine learning algorithms to the text descrip
 https://www.brandwatch.com/blog/top-5-image-recognition-tools/
 
 ### Problem Statement
-
 The goal of this competition is to predict the category of a product based on its image(s)m it's a challenging data set of over 15 million images representing 9 million products in over 5,000 categories.. A product can have one or several images associated. For every product _id in the test set, you should predict the correct category_id. 
 
 
-
-
 ### Datasets and Inputs
-
 This competion uses the real-world data sets, from current catalogue of products on Cdiscount. Files are in BSON format. 
 BSON, short for Binary JSON, is a binary-encoded serialization of JSON-like docments, used with MongoDB. 
 There is more than 15 million images in total at 180x180 resolution.
 
 Apparently the number of training examples (images) per class (category) varies a lot in the training set, from over 80000 in the classes with most training examples to just 12 in the class with the least. So we can assume that the testing set has a different distribution and a class with just a few images in the training set can have thousands of images in the test set.
+
+Also someone noticed that product id values have strong relation to category_id. There's the histogram of top 10 frequent items by product id (X-axis label 0.5 means product id 5,000,000, 2.0 is 20,000,000, etc)
+https://www.kaggle.com/c/cdiscount-image-classification-challenge/discussion/41650
+
+
 
 File Descriptions:
 
@@ -80,7 +81,7 @@ In production, they set up a threshold value for the level of confidence (i.e. t
 Cdiscount have been working on classifying products based on their images - best results so far obtained using Inception v3.
 In the competition the participants already tired different (single) models with the following benchamrks:
 
-Resnet 101, no bagging, no TTA: 
+Resnet 101, no bagging, no TTA (test time augmentation), pre-trained, 4 x GTX 1080 Ti, 18 epochs x 4.5 hours, I have 0.69 after 7th epoch: 
  - val_loss = 1.18
  - val_acc = 0.744
  - LB = 0.7437
@@ -92,31 +93,62 @@ SE-ResNet-50, SGD with Nesterov momentum (0.9) and batch_size=256:
  - val 10 crops accuracy: 71.79
  - LB 10 ceps accuracy: 71.67
  
+Resnet-18, simple SGD, lr 0.1 -> 0.01 -> 0.001, change lr after 2 epochs, just change FC layer to get the 5270 classes and train:
+ - trained for 6 epochs
+ - val_acc = 0.63
+ - 180x180, no data augmentation no crop
  
+Inception_v3, 160 crop:
+ - val_loss = 1.78~
+ - val_acc = 0.66~
+ - LB = 0.673~
  
- 
+ https://www.kaggle.com/c/cdiscount-image-classification-challenge/discussion/41652
  
 
 
 
 ### Evaluation Metrics
-Setting aside the images whiout logo, I'll first treat the problem as a classification problem with 47 categories for each image.
-Then each example in the test set can be assigned exactly one label, and I'll measure the accuracy of our classifiers in predicting the label of each test image. I'll also try to include the images whiout logo in the test procedure and treat this problem as a detection one - configure the models to label as ’whiout logo’ those images whose predictions are made below a certain level of certainty, and then see how the classification rate and false positive rate change as L vary this confidence threshold parameter.
-
 This competition is evaluated on the categorization accuracy of the predictions of 5,000 categories (the percentage of products we get correctly). Currently the top scores are around 70%.
 
 
 ### Project Design
-_(approx. 1 page)_
+- Laoding Datat:
+There is a kernel created by Cdiscount about how to load BSON files in python notebook: https://www.kaggle.com/inversion/processing-bson-files. If I it will be difficult to load all data I'll use MongoDB. Here is a great tutorial on how to do it https://www.kaggle.com/c/cdiscount-image-classification-challenge/discussion/41193.
+
+- Preprocess input mode for pretrain Keras model:
+
+When using pretrain models with Keras there is two preprocessing mode (caffe (0-center each color channel) al and tensorflow(scale pixels between -1 and 1)).
+
+Sklearn complains about the stratified split with 10000 values because some classes end up with just 1 product. You can do a simple split instead of stratified by removing the 'stratify=category_ids' parameter and then it'll work.
+
+- Data augmentation part:
 
 
 
-
-Data augmentation part:
+I would try to do an upsampling from 180x180 to 224x224 and adding some data augmentation. But apparently it makes more sense to use dilated convolutions instead, since then the input is not interpolated, but it still maintains high resolution feature maps. The low-level layers can still stay the same and use the imagenet weights as initialization since these are pretty much only simple filters (which for example react to edges, like Sobel). The mid- to high-level filters will probably have to change a lot though, it may make sense to use dilated convolutions there.
+https://github.com/Cadene/pretrained-models.pytorch/issues/8
+https://www.reddit.com/r/MachineLearning/comments/52drsq/what_is_dilated_convolution/
+http://colah.github.io/posts/2014-12-Groups-Convolution/
 
 The model that got stuck was high capacity but colour/saturation augmentation was enabled. The one that's still chugging along and doing much better only had random crop/scale and rotation. Tthe prevalence of almost constant black or white backgrounds in most images means that adding variability to that requires much more learning than leaving it as it is.
 Next angle is to see if disabling the random crop and just leaving h-flip and a bit of rotation on does better... basically assuming that the preprocessing of the competition dataset leaves things relatively well centred and similarly scaled across train and test datasets. 
 
+- Keras importance sampling
+
+
+- Learning Rate:
+
+https://arxiv.org/abs/1705.11159 "Reinforcement Learning for Learning Rate Control, an algorithm to automatically learn learning rates using neural network based actor-critic methods from deep reinforcement learning (RL)"
+
+PS:
+I'll use EC2 for GPU.
+I'l also try deepsense.ai, signing up at https://neptune.ml will get  me $100 to train my models. (https://www.kaggle.com/c/cdiscount-image-classification-challenge/discussion/41478). The full functional deepsense.ai experiment example can be found here:
+https://www.kaggle.com/c/cdiscount-image-classification-challenge/discussion/41506
+
+
+
+http://proceedings.mlr.press/v70/bello17a/bello17a.pdf "Neural Optimizer Search with Reinforcement Learning"
 
 Sources:
 https://arxiv.org/abs/1610.02357
