@@ -215,7 +215,9 @@ This competition is evaluated on the categorization accuracy of predictions (the
 
 ### DIFFERENT TRICKS AND TIPS
 https://www.kaggle.com/c/cdiscount-image-classification-challenge/discussion/40937
+
 https://www.kaggle.com/c/cdiscount-image-classification-challenge/discussion/40934
+
 [What's your approach on this competition?](https://www.kaggle.com/c/cdiscount-image-classification-challenge/discussion/40033)
 
 -----------
