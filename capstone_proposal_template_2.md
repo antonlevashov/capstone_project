@@ -133,8 +133,12 @@ When using pretrain models with Keras there is two preprocessing mode (caffe (0-
 #### Data augmentation and trasformation:
 There is two ways in how to use data augmentaion upsampling and downsampling. 
 I'll try to do an upsampling from 180x180 to 224x224 and adding some data augmentation. But apparently it makes more sense to use dilated convolutions instead, since then the input is not interpolated, but it still maintains high resolution feature maps. The low-level layers can still stay the same and use the imagenet weights as initialization since these are pretty much only simple filters (which for example react to edges, like Sobel). The mid- to high-level filters will probably have to change a lot though, it may make sense to use dilated convolutions there. I'll also try downsampling by cropping from 180x180 to 160x160 as suggested by many posts in the forum.
+
+Sources:
 https://github.com/Cadene/pretrained-models.pytorch/issues/8
+
 https://www.reddit.com/r/MachineLearning/comments/52drsq/what_is_dilated_convolution/
+
 http://colah.github.io/posts/2014-12-Groups-Convolution/
 
 By looking at the images it can be tempting to desaturate photos (RGB -> NB). But apparently the models got stuck with only colour/saturation augmentation enabled. The ones are doing much better only had random crop/scale and rotation. The prevalence of almost constant black or white backgrounds in most images means that adding variability to that requires much more learning than leaving it as it is. Another angle to explore is to see if disabling the random crop and just leaving h-flip and a bit of rotation does better, basically assuming that the preprocessing of the competition dataset leaves things relatively well centred and similarly scaled across train and test datasets. There are many classes with only a handful of images. For these classes data augmentation may be more important than for the classes with 80,000 images.
@@ -154,30 +158,42 @@ I'll try to use 80/20 or 90/10 by either using a random split or a stratified sp
 
 #### Keras Importance Sampling:
 Imbalance probleme is present in this cahllenge - the distribution of the samples vary a lot. The use of importance sampling can help. Importance sampling focuses the computation to informative/important samples (by sampling mini-batches from a distribution other than uniform) thus accelerating the convergence. Also importance sampling has been successfully used to accelerate stochastic optimization in many convex problems (this method results in 30% faster training of a CNN for CIFAR10 than when using uniform sampling).
+
+Sources:
 http://idiap.ch/~katharas/importance-sampling/
 https://github.com/idiap/importance-sampling
 
 ["Sample Importance in Training Deep Neural Networks".](https://openreview.net/forum?id=r1IRctqxg)
+
 ["A systematic study of the class imbalance problem in convolutional neural networks".](https://arxiv.org/pdf/1710.05381.pdf)
+
 ["Biased Importance Sampling for Deep Neural Network Training".](https://arxiv.org/abs/1706.00043)
 
 
 #### The use of hard samples:
 Based on the prediction scores, it can identify which training (and testing) samples are difficult. Training and testing datasets contain an overwhelming number of easy examples and a small number of hard examples (just a few examples per class). Automatic selection of these hard examples can make training more effective and efficient. We can speedup training with less samples.
 
+Sources:
 [Original disscusion on Kaggle.](https://www.kaggle.com/c/cdiscount-image-classification-challenge/discussion/41523)
+
 ["Curriculum Learning with Deep Convolutional Neural Networks".](http://kth.diva-portal.org/smash/get/diva2:878140/FULLTEXT01.pdf) Apparently we can speedup training with less samples. 
+
 ["Training Region-based Object Detectors with Online Hard Example Mining".](https://arxiv.org/abs/1604.03540) OHEM is a simple and intuitive algorithm that eliminates several heuristics and hyperparameters in common use.
 
 
 #### Layer Configuration and Architecture:
 I'll use pre-trained networks like Xception, Inception_v3, SE-ResNet-50, etc... by only adding a 5270-element dense layer with softmax activation function at the end and also set the last "block" of the network to be trainable (so it trains the classification layer and fine-tunes the last N layers of the network). This is gonna be my base model. I'll also try to freez/unfreez certain layers and adding more layers in the last block.
 
+Sources:
 [Neural Network Architectures](https://medium.com/towards-data-science/neural-network-architectures-156e5bad51ba)
-[Using Bottleneck Features for Multi-Class Classification in Keras and TensorFlow](http://www.codesofinterest.com/2017/08/bottleneck-features-multi-class-classification-keras.html)
-[Xception: Deep Learning with Depthwise Separable Convolutions](https://arxiv.org/abs/1610.02357)
-[VERY DEEP CONVOLUTIONAL NETWORKS FOR LARGE-SCALE IMAGE RECOGNITION](https://arxiv.org/pdf/1409.1556.pdf)
-[AN ANALYSIS OF DEEP NEURAL NETWORK MODELS FOR PRACTICAL APPLICATIONS](https://arxiv.org/pdf/1605.07678.pdf)
+
+[Using Bottleneck Features for Multi-Class Classification in Keras and TensorFlow.](http://www.codesofinterest.com/2017/08/bottleneck-features-multi-class-classification-keras.html)
+
+[Xception: Deep Learning with Depthwise Separable Convolutions.](https://arxiv.org/abs/1610.02357)
+
+[VERY DEEP CONVOLUTIONAL NETWORKS FOR LARGE-SCALE IMAGE RECOGNITION.](https://arxiv.org/pdf/1409.1556.pdf)
+
+[AN ANALYSIS OF DEEP NEURAL NETWORK MODELS FOR PRACTICAL APPLICATIONS.](https://arxiv.org/pdf/1605.07678.pdf)
 
 
 #### Accelerating training of Deep Convolutional Networks:
@@ -213,7 +229,7 @@ etc.
 This competition is evaluated on the categorization accuracy of predictions (the percentage of products you get correct).
 
 
-### DIFFERENT TRICKS AND TIPS
+### Other Sources
 https://www.kaggle.com/c/cdiscount-image-classification-challenge/discussion/40937
 
 https://www.kaggle.com/c/cdiscount-image-classification-challenge/discussion/40934
