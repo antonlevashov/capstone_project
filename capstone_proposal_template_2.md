@@ -62,7 +62,8 @@ The original images are 180x180 so training on random crops of 160x160 is a quic
 I'll use Xception, Inception V3, SE-ResNet-50 with a 5270-neuron Softamx classification layer on Keras (TensorFlow), with the batch size 256 at first, training/validation split is 80%-20%, input image size 160x160 (downsampling). It will takes around 4-6 hours to do a single epoch with 8 workers in model.fit_generator() on EC2 p2.xlarge. This uses the BSON generator posted in competition kernels.
 
 For a moment I'll stick to the single model but it's worth investigate the use of an ensemble of models.
-[Distilling the Knowledge in a Neural Network.](https://www.cs.toronto.edu/~hinton/absps/distillation.pdf) We introduce a new type of ensemble composed of one or more full models and many specialist models which learn to distinguish fine-grained classes that the full models confuse. Unlike a mixture of experts, these specialist models can be trained rapidly and in parallel.
+
+[Distilling the Knowledge in a Neural Network.](https://www.cs.toronto.edu/~hinton/absps/distillation.pdf) "... We introduce a new type of ensemble composed of one or more full models and many specialist models which learn to distinguish fine-grained classes that the full models confuse. Unlike a mixture of experts, these specialist models can be trained rapidly and in parallel."
  
 
 ## Benchmark Model
