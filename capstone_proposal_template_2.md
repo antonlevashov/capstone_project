@@ -135,6 +135,7 @@ There is two ways in how to use data augmentaion upsampling and downsampling.
 I'll try to do an upsampling from 180x180 to 224x224 and adding some data augmentation. But apparently it makes more sense to use dilated convolutions instead, since then the input is not interpolated, but it still maintains high resolution feature maps. The low-level layers can still stay the same and use the imagenet weights as initialization since these are pretty much only simple filters (which for example react to edges, like Sobel). The mid- to high-level filters will probably have to change a lot though, it may make sense to use dilated convolutions there. I'll also try downsampling by cropping from 180x180 to 160x160 as suggested by many posts in the forum.
 
 Sources:
+
 https://github.com/Cadene/pretrained-models.pytorch/issues/8
 
 https://www.reddit.com/r/MachineLearning/comments/52drsq/what_is_dilated_convolution/
@@ -160,7 +161,9 @@ I'll try to use 80/20 or 90/10 by either using a random split or a stratified sp
 Imbalance probleme is present in this cahllenge - the distribution of the samples vary a lot. The use of importance sampling can help. Importance sampling focuses the computation to informative/important samples (by sampling mini-batches from a distribution other than uniform) thus accelerating the convergence. Also importance sampling has been successfully used to accelerate stochastic optimization in many convex problems (this method results in 30% faster training of a CNN for CIFAR10 than when using uniform sampling).
 
 Sources:
+
 http://idiap.ch/~katharas/importance-sampling/
+
 https://github.com/idiap/importance-sampling
 
 ["Sample Importance in Training Deep Neural Networks".](https://openreview.net/forum?id=r1IRctqxg)
@@ -174,6 +177,7 @@ https://github.com/idiap/importance-sampling
 Based on the prediction scores, it can identify which training (and testing) samples are difficult. Training and testing datasets contain an overwhelming number of easy examples and a small number of hard examples (just a few examples per class). Automatic selection of these hard examples can make training more effective and efficient. We can speedup training with less samples.
 
 Sources:
+
 [Original disscusion on Kaggle.](https://www.kaggle.com/c/cdiscount-image-classification-challenge/discussion/41523)
 
 ["Curriculum Learning with Deep Convolutional Neural Networks".](http://kth.diva-portal.org/smash/get/diva2:878140/FULLTEXT01.pdf) Apparently we can speedup training with less samples. 
@@ -185,6 +189,7 @@ Sources:
 I'll use pre-trained networks like Xception, Inception_v3, SE-ResNet-50, etc... by only adding a 5270-element dense layer with softmax activation function at the end and also set the last "block" of the network to be trainable (so it trains the classification layer and fine-tunes the last N layers of the network). This is gonna be my base model. I'll also try to freez/unfreez certain layers and adding more layers in the last block.
 
 Sources:
+
 [Neural Network Architectures](https://medium.com/towards-data-science/neural-network-architectures-156e5bad51ba)
 
 [Using Bottleneck Features for Multi-Class Classification in Keras and TensorFlow.](http://www.codesofinterest.com/2017/08/bottleneck-features-multi-class-classification-keras.html)
@@ -230,6 +235,7 @@ This competition is evaluated on the categorization accuracy of predictions (the
 
 
 ### Other Sources
+
 https://www.kaggle.com/c/cdiscount-image-classification-challenge/discussion/40937
 
 https://www.kaggle.com/c/cdiscount-image-classification-challenge/discussion/40934
