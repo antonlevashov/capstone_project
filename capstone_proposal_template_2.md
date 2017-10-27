@@ -21,7 +21,9 @@ To cut training time I'll use Transfer Learning, as it's an important concept fo
 I don't have a powerful machine so I'll continue to use EC2 from Amazon for this project.
 
 Sources:
+
 [Neural Network Architectures](https://medium.com/towards-data-science/neural-network-architectures-156e5bad51ba)
+
 https://www.kaggle.com/c/cdiscount-image-classification-challenge/
 
 
