@@ -1,7 +1,7 @@
 # Machine Learning Engineer Nanodegree
 ## Capstone Proposal
 Anton Levashov 
-27/09/2017
+27/10/2017
 
 
 ## Proposal
